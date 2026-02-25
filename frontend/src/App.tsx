@@ -4,6 +4,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { UserProvider, useUser } from './contexts/UserContext';
 import { Header } from './components/Header';
+import CustomCursor from './components/CustomCursor';
 import { RoleSelection } from './pages/RoleSelection';
 import { DriverLogin } from './pages/DriverLogin';
 import { DriverDashboard } from './pages/DriverDashboard';
@@ -93,6 +94,7 @@ export function App() {
       <LanguageProvider>
         <UserProvider>
           <AppContent />
+          <CustomCursor />
         </UserProvider>
       </LanguageProvider>
     </ThemeProvider>);

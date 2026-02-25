@@ -11,7 +11,7 @@
 :root {
   --color-primary: #2563eb;
   --color-primary-dark: #1d4ed8;
-  --color-secondary: #14b8a6;
+  --color-secondary: #bceeff;
   --color-secondary-dark: #0d9488;
   --color-success: #10b981;
   --color-warning: #f59e0b;
@@ -123,3 +123,89 @@ body {
   );
   background-size: 1000px 100%;
 }
+
+
+body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%232563eb' stroke='%23000000' stroke-opacity='0.12' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%23ffffff'/></svg>") 10 10, auto;
+}
+
+/* Apply same custom cursor to typical interactive elements */
+button,
+a,
+input[type='button'],
+input[type='submit'],
+.clickable,
+button:where(:not([disabled])),
+a:where(:not([disabled])) {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%232563eb' stroke='%23000000' stroke-opacity='0.12' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%23ffffff'/></svg>") 10 10, pointer;
+}
+
+/* Dark theme cursor (overrides when .dark is on the root element) */
+.dark body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%23f3f4f6' stroke='%2314b8a6' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%2314b8a6'/></svg>") 10 10, auto;
+}
+.dark button,
+.dark a,
+.dark input[type='button'],
+.dark input[type='submit'],
+.dark .clickable {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%23f3f4f6' stroke='%2314b8a6' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%2314b8a6'/></svg>") 10 10, pointer;
+}
+
+/* Keep native text cursor for text inputs */
+input[type='text'],
+input[type='search'],
+textarea,
+[contenteditable] {
+  cursor: text;
+}
+
+/* Hide native cursor globally (we use a DOM cursor driven by GSAP). Inputs keep text cursor above. */
+body,
+button,
+a,
+input[type='button'],
+input[type='submit'],
+.clickable {
+  cursor: none !important;
+}
+.dark body,
+.dark button,
+.dark a,
+.dark input[type='button'],
+.dark input[type='submit'],
+.dark .clickable {
+  cursor: none !important;
+}
+
+/* Custom cursor visuals (DOM elements animated by GSAP) */
+.custom-cursor-outer {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border: 2px solid var(--color-primary);
+  z-index: 9999;
+  mix-blend-mode: normal;
+}
+.custom-cursor-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-primary);
+  z-index: 10000;
+}
+
+/* Dark theme overrides for cursor colors */
+.dark .custom-cursor-outer {
+  border-color: var(--color-secondary);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+.dark .custom-cursor-inner {
+  background: var(--color-secondary);
+}
+
+
