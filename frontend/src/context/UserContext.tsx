@@ -14,6 +14,9 @@ interface UserContextType {
   setIsDriverSharingLocation: (sharing: boolean) => void;
 }
 const UserContext = createContext<UserContextType | undefined>(undefined);
+interface UserProviderProps {
+  children: ReactNode;
+}
 
 
 
