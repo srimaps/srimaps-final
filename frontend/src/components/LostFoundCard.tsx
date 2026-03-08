@@ -52,6 +52,14 @@ export function LostFoundCard({
             className={`w-6 h-6 ${isLost ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`} />
 
         </div>
+            <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            {item.itemName}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+            {item.description}
+          </p>
+            </div>
         </div>
      
     </motion.div>
