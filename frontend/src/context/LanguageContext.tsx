@@ -19,7 +19,15 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     setLanguageState(lang);
     localStorage.setItem('srimaps-language', lang);
   };
-  return ();
+  return (
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage
+      }}>
+
+      {children}
+    </LanguageContext.Provider>);
 
 }
 export function useLanguage() {
@@ -29,3 +37,4 @@ export function useLanguage() {
   }
   return context;
 }
+
