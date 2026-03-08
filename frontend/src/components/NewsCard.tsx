@@ -24,8 +24,18 @@ export function NewsCard({ news, index }: NewsCardProps) {
         y: -4,
         boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)'
       }}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition-all"></motion.div>
+      className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 hover:shadow-xl transition-all">
+
+       <div className="flex items-start gap-4">
+         <div className="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-lg flex-shrink-0">
+          <NewspaperIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+        </div>
+       </div>
+     
+     
+     </motion.div>
   );
 
 }
+
 
