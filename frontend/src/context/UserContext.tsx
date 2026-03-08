@@ -17,6 +17,28 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 interface UserProviderProps {
   children: ReactNode;
 }
+// Mock driver credentials
+const driverCredentials: Record<
+  string,
+  {
+    password: string;
+    name: string;
+  }> =
+{
+  '138': {
+    password: 'driver138',
+    name: 'Kamal Perera'
+  },
+  '177': {
+    password: 'driver177',
+    name: 'Sunil Silva'
+  },
+  '120': {
+    password: 'driver120',
+    name: 'Nimal Fernando'
+  }
+};
+
 
 
 
