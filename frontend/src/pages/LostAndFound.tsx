@@ -354,6 +354,99 @@ export function LostAndFound() {
       </AnimatePresence>
 
       {/* Contact Modal */}
-      
+      <AnimatePresence>
+        {contactModalItem &&
+        <>
+            <motion.div
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              opacity: 1
+            }}
+            exit={{
+              opacity: 0
+            }}
+            onClick={() => setContactModalItem(null)}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
+
+            <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.9
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0.9
+            }}
+            transition={{
+              type: 'spring',
+              damping: 25,
+              stiffness: 300
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4">
+
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                    {translate('contactInfo', language)}
+                  </h3>
+                  <button
+                  onClick={() => setContactModalItem(null)}
+                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  aria-label="Close">
+
+                    <XIcon className="w-5 h-5 dark:text-gray-300" />
+                  </button>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                      Item
+                    </p>
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      {contactModalItem.itemName}
+                    </p>
+                  </div>
+
+                  <div className="bg-primary-50 dark:bg-primary-900/30 rounded-lg p-4 flex items-center gap-3">
+                    <PhoneIcon className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        Contact
+                      </p>
+                      <a
+                      href={`tel:${contactModalItem.contact}`}
+                      className="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+
+                        {contactModalItem.contact}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <motion.button
+                whileHover={{
+                  scale: 1.02
+                }}
+                whileTap={{
+                  scale: 0.98
+                }}
+                onClick={() => setContactModalItem(null)}
+                className="w-full mt-6 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+
+                  {translate('close', language)}
+                </motion.button>
+              </div>
+            </motion.div>
+          </>
+        }
+      </AnimatePresence>
     </div>);
 }
+
