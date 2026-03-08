@@ -31,11 +31,21 @@ export function NewsCard({ news, index }: NewsCardProps) {
           <NewspaperIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
         </div>
        </div>
+
+       <div className="flex-1 min-w-0">
+         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+            {news.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+            {news.description}
+          </p>
+       </div>
      
      
      </motion.div>
   );
 
 }
+
 
 
