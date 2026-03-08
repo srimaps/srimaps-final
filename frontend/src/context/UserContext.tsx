@@ -42,6 +42,7 @@ const driverCredentials: Record<
 export function UserProvider({ children }: UserProviderProps){
     const [role, setRole] = useState<UserRole>(null);
     const [driver, setDriver] = useState<Driver | null>(null);
+    const [isDriverSharingLocation, setIsDriverSharingLocation] = useState(false);
 
 
 
