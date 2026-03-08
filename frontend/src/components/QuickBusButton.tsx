@@ -12,6 +12,17 @@ export function QuickBusButtons({
   selectedBus
 }: QuickBusButtonsProps) {
   const { language } = useLanguage();
-  return ();
+  return (
+    <div className="mb-6">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        {translate('quickAccess', language)}
+      </label>
+      <div className="flex flex-wrap gap-2">
+        {busNumbers.map((number, index) => {
+          const isActive = number === '138';
+          const isSelected = selectedBus === number;
+          return ();
+  );
 
 }
+
