@@ -59,9 +59,24 @@ export function LostFoundCard({
           <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
             {item.description}
           </p>
+                
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <div className="flex items-center gap-1">
+              <BusIcon className="w-4 h-4" />
+              <span>Route {item.route}</span>
             </div>
-        </div>
-     
+            <div className="flex items-center gap-1">
+              <CalendarIcon className="w-4 h-4" />
+              <span>{item.date}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ClockIcon className="w-4 h-4" />
+              <span>{item.time}</span>
+            </div>
+          </div>
+                
+            </div>
+        </div>     
     </motion.div>
            );
 }
