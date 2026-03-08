@@ -38,9 +38,28 @@ export function ScheduleCard({ schedule, index }: ScheduleCardProps) {
           <span className="text-lg">{schedule.departureTime}</span>
         </div>
       </div>
+
+      <div className="flex items-center gap-3 text-gray-700 dark:text-gray-300">
+        <div className="flex items-center gap-2 flex-1">
+          <MapPinIcon className="w-4 h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
+          <span className="text-sm font-medium truncate">
+            {schedule.startDestination}
+          </span>
+        </div>
+
+        <ArrowRightIcon className="w-5 h-5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+
+        <div className="flex items-center gap-2 flex-1">
+          <MapPinIcon className="w-4 h-4 text-red-600 dark:text-red-400 flex-shrink-0" />
+          <span className="text-sm font-medium truncate">
+            {schedule.endDestination}
+          </span>
+        </div>
+      </div>
     
     </motion.div>
   );
 }
+
 
 
