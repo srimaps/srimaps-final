@@ -43,6 +43,19 @@ export function UserProvider({ children }: UserProviderProps){
     const [role, setRole] = useState<UserRole>(null);
     const [driver, setDriver] = useState<Driver | null>(null);
     const [isDriverSharingLocation, setIsDriverSharingLocation] = useState(false);
+    const loginDriver = (busNumber: string, password: string): boolean => {
+    const credentials = driverCredentials[busNumber];
+    if (credentials && credentials.password === password) {
+      setDriver({
+        busNumber,
+        name: credentials.name
+      });
+      setRole('driver');
+      return true;
+    }
+    return false;
+  };
+
 
 
 
