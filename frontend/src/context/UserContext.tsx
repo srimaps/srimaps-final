@@ -60,6 +60,23 @@ export function UserProvider({ children }: UserProviderProps){
     setRole(null);
     setIsDriverSharingLocation(false);
   };
+  return (
+    <UserContext.Provider
+      value={{
+        role,
+        setRole,
+        driver,
+        loginDriver,
+        logoutDriver,
+        isDriverSharingLocation,
+        setIsDriverSharingLocation
+      }}>
+
+      {children}
+    </UserContext.Provider>);
+
+}
+
 
 
 
