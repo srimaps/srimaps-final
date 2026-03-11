@@ -37,7 +37,9 @@ export function Schedule() {
     },
     {} as Record<string, ScheduleItem[]>
   );
-   
+  return (
+    <div className="space-y-6"> 
+
 
 
 
