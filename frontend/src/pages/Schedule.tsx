@@ -59,6 +59,16 @@ export function Schedule() {
         </h1>
       </motion.div>      
       {/* Search Panel */}
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 20
+        }}
+        animate={{
+          opacity: 1,
+          y: 0
+        }}
+        className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
 
 
 
