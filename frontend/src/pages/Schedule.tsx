@@ -157,6 +157,10 @@ export function Schedule() {
             transition={{
               delay: groupIndex * 0.1
             }}>
+            
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                {translate('route', language)} {route}
+              </h2>
 
 
 
