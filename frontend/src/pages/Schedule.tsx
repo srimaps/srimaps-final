@@ -50,7 +50,10 @@ export function Schedule() {
           y: 0
         }}
         className="flex items-center gap-3">
-
+        
+        <div className="bg-primary-600 p-3 rounded-xl">
+          <CalendarIcon className="w-8 h-8 text-white" />
+        </div>
 
 
 
