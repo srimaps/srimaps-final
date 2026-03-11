@@ -3,3 +3,6 @@ import { motion } from 'framer-motion';
 import { UsersIcon, TruckIcon } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translate } from '../utils/translations';
+interface RoleSelectionProps {
+  onSelectRole: (role: 'passenger' | 'driver') => void;
+}
