@@ -99,6 +99,13 @@ export function Schedule() {
         
         {/* Search Inputs */}
         <div className="flex flex-col sm:flex-row gap-4">
+          {searchType === 'number' ?
+          <input
+            type="text"
+            value={routeNumber}
+            onChange={(e) => setRouteNumber(e.target.value)}
+            placeholder="138"
+            className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" /> :
 
 
 
