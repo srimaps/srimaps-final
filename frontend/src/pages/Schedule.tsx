@@ -6,3 +6,5 @@ import { mockSchedules, ScheduleItem } from '../utils/mockData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translate } from '../utils/translations';
 export function Schedule() {
+  const { language } = useLanguage();
+
