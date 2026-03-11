@@ -14,6 +14,10 @@ export function Schedule() {
   const [filteredSchedules, setFilteredSchedules] =
   useState<ScheduleItem[]>(mockSchedules);
   const handleSearch = () => {
+    if (searchType === 'number' && routeNumber) {
+      const filtered = mockSchedules.filter((s) => s.route === routeNumber);
+      setFilteredSchedules(filtered.length > 0 ? filtered : mockSchedules);
+    }
 
 
 
