@@ -17,7 +17,8 @@ export function Schedule() {
     if (searchType === 'number' && routeNumber) {
       const filtered = mockSchedules.filter((s) => s.route === routeNumber);
       setFilteredSchedules(filtered.length > 0 ? filtered : mockSchedules);
-    }
+    }else if (searchType === 'route' && startDest && endDest) {
+  
 
 
 
