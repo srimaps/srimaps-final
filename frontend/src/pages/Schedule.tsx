@@ -69,6 +69,8 @@ export function Schedule() {
           y: 0
         }}
         className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+        {/* Search Type Toggle */}
+        <div className="flex gap-2 mb-6">
 
 
 
