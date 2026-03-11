@@ -8,5 +8,7 @@ import { translate } from '../utils/translations';
 export function Schedule() {
   const { language } = useLanguage();
   const [searchType, setSearchType] = useState<'number' | 'route'>('number');
+  const [routeNumber, setRouteNumber] = useState('');
+
 
 
