@@ -7,3 +7,5 @@ interface RoleSelectionProps {
   onSelectRole: (role: 'passenger' | 'driver') => void;
 }
 export function RoleSelection({ onSelectRole }: RoleSelectionProps) {
+  const { language } = useLanguage();
+
