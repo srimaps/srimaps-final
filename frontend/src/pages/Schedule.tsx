@@ -13,6 +13,7 @@ export function Schedule() {
   const [endDest, setEndDest] = useState('');
   const [filteredSchedules, setFilteredSchedules] =
   useState<ScheduleItem[]>(mockSchedules);
+  const handleSearch = () => {
 
 
 
