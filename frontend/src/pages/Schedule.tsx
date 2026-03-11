@@ -107,6 +107,23 @@ export function Schedule() {
             placeholder="138"
             className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" /> :
 
+           <>
+              <input
+              type="text"
+              value={startDest}
+              onChange={(e) => setStartDest(e.target.value)}
+              placeholder={translate('startDestination', language)}
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" />
+
+              <input
+              type="text"
+              value={endDest}
+              onChange={(e) => setEndDest(e.target.value)}
+              placeholder={translate('endDestination', language)}
+              className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" />
+
+            </>
+          } 
 
 
 
