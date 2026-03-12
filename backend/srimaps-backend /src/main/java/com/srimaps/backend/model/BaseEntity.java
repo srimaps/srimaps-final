@@ -1,4 +1,4 @@
-package com.yourpackage.backend.model;
+package com.srimaps.backend.model;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,3 +25,4 @@ public abstract class BaseEntity {
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }
+
