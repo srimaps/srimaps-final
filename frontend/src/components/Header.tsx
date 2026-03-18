@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { BusIcon, MenuIcon, XIcon, SunIcon, MoonIcon } from 'lucide-react';
+import { MenuIcon, XIcon, SunIcon, MoonIcon } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { translate } from '../utils/translations';
 import { LanguageSelector } from './LanguageSelector';
+import SriMapsLogo from '../assets/logo.png';
 interface HeaderProps {
   currentPage: string;
   onNavigate: (page: string) => void;
@@ -52,9 +53,11 @@ export function Header({ currentPage, onNavigate }: HeaderProps) {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => onNavigate('tracking')}>
 
-            <div className="bg-primary-600 p-2 rounded-lg">
-              <BusIcon className="w-6 h-6 text-white" />
-            </div>
+            <img
+                src={SriMapsLogo}
+                alt="SriMaps Logo"
+                className="h-12 w-auto object-contain"
+            />
             <span className="text-xl font-bold text-primary-600">
               {translate('appName', language)}
             </span>
