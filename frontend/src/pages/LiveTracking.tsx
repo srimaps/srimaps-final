@@ -1,11 +1,53 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { SearchIcon, MapPinIcon, BusIcon } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SearchBox } from '@mapbox/search-js-react';
+import { SearchIcon, MapPinIcon, BusIcon, ArrowUpDown} from 'lucide-react';
 import { BusMap } from '../components/BusMap';
 import { QuickBusButtons } from '../components/QuickBusButtons';
 import { mockBuses, Bus } from '../utils/mockData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translate } from '../utils/translations';
+import { ErrorBoundary } from '../components/ErrorBoundary';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
+interface BusRoute {
+  number: string;
+  from: string;
+  to: string;
+  fromCoords: [number, number]; // [lng, lat]
+  toCoords:   [number, number];
+}
+const BUS_ROUTES: BusRoute[] = [
+  {
+    number:     '216',
+    from:       'Kadawatha Bus Stand',
+    to:         'Colombo Fort Bus Stand',
+    fromCoords: [79.9545, 7.0051],   // Kadawatha Bus Stand, Kadawatha-Ganemulla Rd
+    toCoords:   [79.8567, 6.9353],   // Colombo Central Bus Stand, Olcott Mawatha
+  },
+  {
+    number:     '261',
+    from:       'Kadawatha Bus Stand',
+    to:         'Colombo Fort Bus Stand',
+    fromCoords: [79.9545, 7.0051],   // Same route as 216
+    toCoords:   [79.8567, 6.9353],
+  },
+  {
+    number:     '100',
+    from:       'Moratuwa Bus Stand',
+    to:         'Dehiwala Bus Stand',
+    fromCoords: [79.8863, 6.7589],   // Moratuwa (Angulana) bus terminus
+    toCoords:   [79.8658, 6.8540],   // Dehiwala main bus stop, Galle Rd
+  },
+  {
+    number:     '101',
+    from:       'Moratuwa Bus Stand',
+    to:         'Pettah Bus Stand',
+    fromCoords: [79.8863, 6.7589],   // Moratuwa (Angulana) bus terminus
+    toCoords:   [79.8574, 6.9350],   // Pettah Bus Stand, Bastian Mawatha
+  },
+];
+
 export function LiveTracking() {
   const { language } = useLanguage();
   const [searchType, setSearchType] = useState<'number' | 'route'>('number');
