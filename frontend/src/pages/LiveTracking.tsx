@@ -47,6 +47,39 @@ const BUS_ROUTES: BusRoute[] = [
     toCoords:   [79.8574, 6.9350],   // Pettah Bus Stand, Bastian Mawatha
   },
 ];
+interface BusStand {
+  label:   string;           // canonical display name
+  coords:  [number, number]; // [lng, lat]
+  aliases: string[];         // lowercase keywords that trigger a snap
+}
+//Bus stand with alias
+const BUS_STANDS: BusStand[] = [
+  {
+    label:   'Kadawatha Bus Stand',
+    coords:  [79.9545, 7.0051],
+    aliases: ['kadawatha'],
+  },
+  {
+    label:   'Colombo Fort Bus Stand',
+    coords:  [79.8567, 6.9353],
+    aliases: ['fort', 'colombo fort', 'colombo 1', 'fort station'],
+  },
+  {
+    label:   'Pettah Bus Stand',
+    coords:  [79.8574, 6.9350],
+    aliases: ['pettah', 'bastian', 'colombo 11'],
+  },
+  {
+    label:   'Moratuwa Bus Stand',
+    coords:  [79.8863, 6.7589],
+    aliases: ['moratuwa', 'angulana'],
+  },
+  {
+    label:   'Dehiwala Bus Stand',
+    coords:  [79.8658, 6.8540],
+    aliases: ['dehiwala'],
+  },
+];
 
 export function LiveTracking() {
   const { language } = useLanguage();
