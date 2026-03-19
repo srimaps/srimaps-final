@@ -136,3 +136,96 @@ function createOriginMarker(label: string): HTMLElement {
     `;
     return wrap;
 }
+
+function createDestinationMarker(label: string): HTMLElement {
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;';
+    wrap.innerHTML = `
+        <div style="background:#0f172a;color:#fff;font-family:'Segoe UI',system-ui,sans-serif;
+            font-size:11px;font-weight:700;letter-spacing:0.06em;padding:4px 13px;
+            border-radius:100px;margin-bottom:9px;white-space:nowrap;
+            box-shadow:0 4px 14px rgba(0,0,0,0.4);">${label}</div>
+        <svg width="32" height="42" viewBox="0 0 32 42" xmlns="http://www.w3.org/2000/svg"
+             style="filter:drop-shadow(0 6px 14px rgba(0,0,0,0.5))">
+            <ellipse cx="16" cy="41" rx="8" ry="2.5" fill="#000" opacity="0.12"/>
+            <path d="M16 1C8.268 1 2 7.268 2 15C2 25 16 40 16 40C16 40 30 25 30 15C30 7.268 23.732 1 16 1Z"
+                  fill="#0f172a"/>
+            <circle cx="16" cy="15" r="8" fill="#fff"/>
+            <circle cx="16" cy="15" r="4" fill="#0f172a"/>
+        </svg>
+    `;
+    return wrap;
+}
+
+function createBusMarkerEl(status: string, number: string): HTMLElement {
+    const el = document.createElement('div');
+    const dot = status === 'on-time' ? '#22c55e' : '#ef4444';
+    el.style.cssText = 'display:block;cursor:pointer;position:relative;';
+    el.innerHTML = `
+        <div class="bus-inner" style="
+            width:46px;height:46px;background:#0f172a;border-radius:50%;
+            border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,0.35);
+            display:flex;align-items:center;justify-content:center;
+            transition:transform 0.15s cubic-bezier(.34,1.56,.64,1);position:relative;">
+            ${SVG.busW}
+            <div style="position:absolute;top:-2px;right:-2px;width:13px;height:13px;
+                background:${dot};border-radius:50%;border:2.5px solid #fff;
+                box-shadow:0 1px 5px rgba(0,0,0,0.25);"></div>
+        </div>
+        <div style="position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+            background:#0f172a;color:#fff;font-family:'Segoe UI',system-ui,sans-serif;
+            font-size:9px;font-weight:800;letter-spacing:0.07em;padding:2px 8px;
+            border-radius:100px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25);">${number}</div>
+    `;
+    const inner = el.querySelector('.bus-inner') as HTMLElement;
+    el.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.12)'; });
+    el.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)'; });
+    return el;
+}
+
+function buildRouteHoverPopup(from: string, to: string, busNumbers: string): string {
+    return CARD(`
+        <div style="display:flex;align-items:center;gap:8px;
+                    padding-bottom:11px;margin-bottom:12px;
+                    border-bottom:1px solid rgba(255,255,255,0.07);">
+            ${SVG.routeIcon}
+            <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);
+                         letter-spacing:0.1em;text-transform:uppercase;">Route Overview</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:5px;">
+            <div style="width:26px;height:26px;flex-shrink:0;background:rgba(255,255,255,0.06);
+                        border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                ${SVG.originDot}
+            </div>
+            <div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.09em;
+                             text-transform:uppercase;margin-bottom:2px;">Pickup</div>
+                <div style="font-size:13px;font-weight:700;color:#f8fafc;">${from}</div>
+            </div>
+        </div>
+
+        <div style="margin-left:12px;border-left:1.5px dashed rgba(255,255,255,0.1);
+                    height:18px;margin-bottom:5px;"></div>
+
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:${busNumbers ? '14' : '0'}px;">
+            <div style="width:26px;height:26px;flex-shrink:0;background:rgba(255,255,255,0.06);
+                        border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                ${SVG.destPin}
+            </div>
+            <div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:0.09em;
+                             text-transform:uppercase;margin-bottom:2px;">Destination</div>
+                <div style="font-size:13px;font-weight:700;color:#f8fafc;">${to}</div>
+            </div>
+        </div>
+
+        ${busNumbers ? `
+        <div style="display:flex;align-items:center;gap:8px;
+                    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+                    border-radius:10px;padding:8px 12px;">
+            ${SVG.busW}
+            <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);">${busNumbers}</span>
+        </div>` : ''}
+    `, 215);
+}
