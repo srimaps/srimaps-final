@@ -1,0 +1,210 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+:root {
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-secondary: #bceeff;
+  --color-secondary-dark: #0d9488;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+.dark {
+  --color-bg: #111827;
+  --color-surface: #1f2937;
+  --color-text: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+/* Leaflet map styles */
+.leaflet-container {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  z-index: 0;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+}
+.leaflet-popup-content {
+  margin: 16px;
+  font-size: 14px;
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+/* Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+.skeleton {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    #f1f5f9 0%,
+    #e2e8f0 20%,
+    #f1f5f9 40%,
+    #f1f5f9 100%
+  );
+  background-size: 1000px 100%;
+}
+.dark .skeleton {
+  background: linear-gradient(
+    to right,
+    #374151 0%,
+    #4b5563 20%,
+    #374151 40%,
+    #374151 100%
+  );
+  background-size: 1000px 100%;
+}
+
+
+body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%232563eb' stroke='%23000000' stroke-opacity='0.12' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%23ffffff'/></svg>") 10 10, auto;
+}
+
+/* Apply same custom cursor to typical interactive elements */
+button,
+a,
+input[type='button'],
+input[type='submit'],
+.clickable,
+button:where(:not([disabled])),
+a:where(:not([disabled])) {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%232563eb' stroke='%23000000' stroke-opacity='0.12' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%23ffffff'/></svg>") 10 10, pointer;
+}
+
+/* Dark theme cursor (overrides when .dark is on the root element) */
+.dark body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%23f3f4f6' stroke='%2314b8a6' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%2314b8a6'/></svg>") 10 10, auto;
+}
+.dark button,
+.dark a,
+.dark input[type='button'],
+.dark input[type='submit'],
+.dark .clickable {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><circle cx='10' cy='10' r='8' fill='%23f3f4f6' stroke='%2314b8a6' stroke-width='2'/><circle cx='10' cy='10' r='3' fill='%2314b8a6'/></svg>") 10 10, pointer;
+}
+
+/* Keep native text cursor for text inputs */
+input[type='text'],
+input[type='search'],
+textarea,
+[contenteditable] {
+  cursor: text;
+}
+
+/* Hide native cursor globally (we use a DOM cursor driven by GSAP). Inputs keep text cursor above. */
+body,
+button,
+a,
+input[type='button'],
+input[type='submit'],
+.clickable {
+  cursor: none !important;
+}
+.dark body,
+.dark button,
+.dark a,
+.dark input[type='button'],
+.dark input[type='submit'],
+.dark .clickable {
+  cursor: none !important;
+}
+
+/* Custom cursor visuals (DOM elements animated by GSAP) */
+.custom-cursor-outer {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  border: 2px solid var(--color-primary);
+  z-index: 9999;
+  mix-blend-mode: normal;
+}
+.custom-cursor-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--color-primary);
+  z-index: 10000;
+}
+
+/* Dark theme overrides for cursor colors */
+.dark .custom-cursor-outer {
+  border-color: var(--color-secondary);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+.dark .custom-cursor-inner {
+  background: var(--color-secondary);
+}
+
+
