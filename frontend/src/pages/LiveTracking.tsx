@@ -81,14 +81,71 @@ const BUS_STANDS: BusStand[] = [
   },
 ];
 
+function snapToBusStand(name: string): BusStand | null {
+  const n = name.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+  for (const stand of BUS_STANDS) {
+    if (stand.aliases.some(alias => n.includes(alias) || alias.includes(n.split(' ')[0]))) {
+      return stand;
+    }
+  }
+  return null;
+}
+
+// Normalize for loose matching
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+// Find a bus route matching from/to in either direction (matches city name OR bus stand label)
+function findRouteMatch(from: string, to: string): BusRoute | null {
+  // First try to snap both to known bus stands
+  const snapFrom = snapToBusStand(from);
+  const snapTo   = snapToBusStand(to);
+  const nf = norm(snapFrom?.label ?? from);
+  const nt = norm(snapTo?.label   ?? to);
+
+  for (const r of BUS_ROUTES) {
+    const rf = norm(r.from);
+    const rt = norm(r.to);
+    const fwdMatch = (nf.includes(rf) || rf.includes(nf)) && (nt.includes(rt) || rt.includes(nt));
+    const revMatch = (nf.includes(rt) || rt.includes(nf)) && (nt.includes(rf) || rf.includes(nf));
+    if (fwdMatch || revMatch) return r;
+  }
+  return null;
+}
+
 export function LiveTracking() {
   const { language } = useLanguage();
+  
   const [searchType, setSearchType] = useState<'number' | 'route'>('number');
   const [busNumber, setBusNumber] = useState('');
   const [startDest, setStartDest] = useState('');
   const [endDest, setEndDest] = useState('');
+  const [startDestCoords, setStartDestCoords] = useState<[number, number] | null>(null);
+  const [endDestCoords, setEndDestCoords]     = useState<[number, number] | null>(null);  
+  const [startLabel, setStartLabel]           = useState('');
+  const [endLabel, setEndLabel]               = useState('');
   const [selectedBus, setSelectedBus] = useState<Bus | null>(null);
   const [displayedBuses, setDisplayedBuses] = useState<Bus[]>(mockBuses);
+  const [swapping, setSwapping]               = useState(false);
+
+  const [sbKey, setSbKey] = useState(0);
+
+  const geocodePlace = async (placeName: string): Promise<[number, number] | null> => {
+    try {
+      const token = import.meta.env.VITE_MAPBOX_TOKEN!;
+      const res   = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(placeName)}.json?country=LK&access_token=${token}`
+      );
+      const data = await res.json();
+      if (data.features?.length > 0) {
+        const [lng, lat] = data.features[0].geometry.coordinates;
+        return [lng, lat];
+      }
+    } catch (err) {
+      console.error('Geocoding error:', err);
+    }
+    return null;
+  };
+  
   const handleSearch = () => {
     if (searchType === 'number' && busNumber) {
       const found = mockBuses.find((b) => b.number === busNumber);
