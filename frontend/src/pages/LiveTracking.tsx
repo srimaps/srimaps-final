@@ -269,4 +269,246 @@ export function LiveTracking() {
 
     setTimeout(() => setSwapping(false), 400);
   };
+  return (
+      <div className="h-full flex flex-col lg:flex-row gap-6">
+
+        {/* ── Search Panel ── */}
+        <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:w-96 flex-shrink-0 space-y-6"
+        >
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              {translate('liveTracking', language)}
+            </h2>
+
+            {/* Quick Bus Buttons */}
+            <QuickBusButtons
+                onSelectBus={handleBusNumber}
+                selectedBus={selectedBus?.number}
+            />
+
+            {/* Search Type Toggle */}
+            <div className="flex gap-2 mb-6">
+              {(['number', 'route'] as const).map(type => (
+                  <motion.button
+                      key={type}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setSearchType(type)}
+                      className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
+                          searchType === type
+                              ? 'bg-primary-600 text-white'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                  >
+                    {type === 'number' ? translate('busNumber', language) : translate('route', language)}
+                  </motion.button>
+              ))}
+            </div>
+
+            {/* Search Inputs */}
+            <AnimatePresence mode="wait">
+              {searchType === 'number' ? (
+                  <motion.div
+                      key="number"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      className="space-y-4"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {translate('busNumber', language)}
+                      </label>
+                      <input
+                          type="text"
+                          value={busNumber}
+                          onChange={e => setBusNumber(e.target.value)}
+                          onKeyDown={e => e.key === 'Enter' && handleSearch()}
+                          placeholder="216, 100, 101…"
+                          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                      />
+                    </div>
+                  </motion.div>
+              ) : (
+                  <motion.div
+                      key="route"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      className="space-y-0"
+                  >
+                    {/* Start */}
+                    <div className="mb-1">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {translate('startDestination', language)}
+                      </label>
+                      <SearchBox
+                          key={`start-${sbKey}`}
+                          accessToken={import.meta.env.VITE_MAPBOX_TOKEN!}
+                          onRetrieve={res => {
+                            const f = res.features[0];
+                            if (!f) return;
+                            const rawName = f.properties?.name || f.place_name || 'Start';
+                            const snapped = snapToBusStand(rawName);
+                            if (snapped) {
+                              setStartDestCoords(snapped.coords);
+                              setStartDest(snapped.label);
+                              setStartLabel(snapped.label);
+                            } else {
+                              setStartDestCoords(f.geometry.coordinates as [number, number]);
+                              setStartDest(rawName);
+                              setStartLabel(rawName);
+                            }
+                          }}
+                          placeholder={startLabel || 'e.g. Kadawatha'}
+                      />
+                    </div>
+
+                    {/* Swap button — centred between the two fields */}
+                    <div className="flex justify-center py-1">
+                      <motion.button
+                          onClick={handleSwap}
+                          whileHover={{ scale: 1.08 }}
+                          whileTap={{ scale: 0.92 }}
+                          animate={swapping ? { rotate: 180 } : { rotate: 0 }}
+                          transition={{ duration: 0.3 }}
+                          title="Swap destinations"
+                          className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 flex items-center justify-center shadow-sm hover:bg-primary-50 dark:hover:bg-gray-600 hover:border-primary-400 transition-colors"
+                      >
+                        <ArrowUpDown className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                      </motion.button>
+                    </div>
+
+                    {/* End */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {translate('endDestination', language)}
+                      </label>
+                      <SearchBox
+                          key={`end-${sbKey}`}
+                          accessToken={import.meta.env.VITE_MAPBOX_TOKEN!}
+                          onRetrieve={res => {
+                            const f = res.features[0];
+                            if (!f) return;
+                            const rawName = f.properties?.name || f.place_name || 'End';
+                            const snapped = snapToBusStand(rawName);
+                            if (snapped) {
+                              setEndDestCoords(snapped.coords);
+                              setEndDest(snapped.label);
+                              setEndLabel(snapped.label);
+                            } else {
+                              setEndDestCoords(f.geometry.coordinates as [number, number]);
+                              setEndDest(rawName);
+                              setEndLabel(rawName);
+                            }
+                          }}
+                          placeholder={endLabel || 'e.g. Colombo Fort'}
+                      />
+                    </div>
+                  </motion.div>
+              )}
+            </AnimatePresence>
+
+            <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleSearch}
+                className="w-full mt-6 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <SearchIcon className="w-5 h-5" />
+              {translate('searchButton', language)}
+            </motion.button>
+          </div>
+
+          {/* Selected Bus Info */}
+          <AnimatePresence>
+            {selectedBus && (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-lg">
+                      <BusIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                        Bus {selectedBus.number}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{selectedBus.route}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <MapPinIcon className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">From</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{startLabel || selectedBus.startDestination}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <MapPinIcon className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">To</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{endLabel || selectedBus.endDestination}</p>
+                      </div>
+                    </div>
+
+                    {selectedBus.currentLocation?.lat !== 0 && (
+                        <div className="flex items-start gap-2">
+                          <MapPinIcon className="w-5 h-5 text-gray-400 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                              {translate('currentLocation', language)}
+                            </p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              {selectedBus.currentLocation.lat.toFixed(4)},{' '}
+                              {selectedBus.currentLocation.lng.toFixed(4)}
+                            </p>
+                          </div>
+                        </div>
+                    )}
+
+                    <div className="pt-3 border-t dark:border-gray-700">
+                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                      selectedBus.status === 'on-time'
+                          ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
+                          : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'
+                  }`}>
+                    {selectedBus.status === 'on-time'
+                        ? translate('onTime', language)
+                        : translate('delayed', language)}
+                  </span>
+                    </div>
+                  </div>
+                </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* ── Map ── */}
+        <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex-1 min-h-[500px] lg:h-full relative"
+        >
+          <ErrorBoundary>
+            <BusMap
+                buses={displayedBuses}
+                selectedBus={selectedBus}
+                startCoords={startDestCoords ?? undefined}
+                endCoords={endDestCoords ?? undefined}
+                startLabel={startLabel || undefined}
+                endLabel={endLabel || undefined}
+            />
+          </ErrorBoundary>
+        </motion.div>
+      </div>
+  );
 }
