@@ -297,3 +297,188 @@ interface BusMapProps {
     startLabel?: string;
     endLabel?: string;
 }
+export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel, endLabel }: BusMapProps) {
+    const mapContainer = useRef<HTMLDivElement | null>(null);
+    const mapRef       = useRef<mapboxgl.Map | null>(null);
+    const markersRef   = useRef<mapboxgl.Marker[]>([]);
+
+    const center: [number, number] = selectedBus
+        ? [selectedBus.currentLocation.lng, selectedBus.currentLocation.lat]
+        : [79.8612, 6.9271];
+
+    // ── Init map
+    useEffect(() => {
+        if (!mapContainer.current || mapRef.current) return;
+        mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN!;
+        mapRef.current = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center,
+            zoom: selectedBus ? 14 : 12,
+        });
+        mapRef.current.on('load', () => mapRef.current?.resize());
+        return () => { mapRef.current?.remove(); mapRef.current = null; };
+    }, []);
+
+    // ── Bus markers
+    useEffect(() => {
+        if (!mapRef.current) return;
+        markersRef.current.forEach(m => m.remove());
+        markersRef.current = [];
+
+        buses.forEach(bus => {
+            const el = createBusMarkerEl(bus.status, bus.number);
+            const popup = new mapboxgl.Popup({ offset: 38, maxWidth: 'none' })
+                .setHTML(buildBusPopup(bus));
+            const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
+                .setLngLat([bus.currentLocation.lng, bus.currentLocation.lat])
+                .setPopup(popup)
+                .addTo(mapRef.current!);
+            markersRef.current.push(marker);
+        });
+    }, [buses]);
+
+    // ── Route + markers
+    useEffect(() => {
+        const map = mapRef.current;
+        if (!map || !startCoords || !endCoords) return;
+
+        const drawRoute = async () => {
+            if (!map.isStyleLoaded()) {
+                await new Promise<void>(res => map.once('load', res));
+            }
+            try {
+                const geometry = await getRoute(startCoords, endCoords);
+
+                ['route-line-dash', 'route-line', 'route-line-casing', 'route-line-glow'].forEach(id => {
+                    if (map.getLayer(id)) map.removeLayer(id);
+                });
+                if (map.getSource('route')) map.removeSource('route');
+                routeMarkersRef.current.forEach(m => m.remove());
+                routeMarkersRef.current = [];
+
+                map.addSource('route', {
+                    type: 'geojson',
+                    data: { type: 'Feature', geometry, properties: {} },
+                });
+
+                // Soft green halo
+                map.addLayer({
+                    id: 'route-line-glow',
+                    type: 'line',
+                    source: 'route',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: { 'line-color': '#22c55e', 'line-width': 22, 'line-opacity': 0.14 },
+                });
+                // Dark casing
+                map.addLayer({
+                    id: 'route-line-casing',
+                    type: 'line',
+                    source: 'route',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: { 'line-color': '#052e16', 'line-width': 11, 'line-opacity': 1 },
+                });
+                // Green main line
+                map.addLayer({
+                    id: 'route-line',
+                    type: 'line',
+                    source: 'route',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: { 'line-color': '#22c55e', 'line-width': 6, 'line-opacity': 1 },
+                });
+                // White direction dashes
+                map.addLayer({
+                    id: 'route-line-dash',
+                    type: 'line',
+                    source: 'route',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: {
+                        'line-color': '#fff',
+                        'line-width': 1.5,
+                        'line-opacity': 0.35,
+                        'line-dasharray': [2, 10],
+                    },
+                });
+
+                const fromLabel  = startLabel || 'Start';
+                const toLabel    = endLabel   || 'End';
+                const busNumbers = buses.map(b => `Bus ${b.number}`).join(', ');
+
+                // Origin
+                const startEl = createOriginMarker(fromLabel);
+                const startMarker = new mapboxgl.Marker({ element: startEl, anchor: 'bottom' })
+                    .setLngLat(startCoords)
+                    .setPopup(new mapboxgl.Popup({ offset: 18, maxWidth: 'none' })
+                        .setHTML(buildEndpointPopup('pickup', fromLabel)))
+                    .addTo(map);
+
+                // Destination
+                const endEl = createDestinationMarker(toLabel);
+                const endMarker = new mapboxgl.Marker({ element: endEl, anchor: 'bottom' })
+                    .setLngLat(endCoords)
+                    .setPopup(new mapboxgl.Popup({ offset: 18, maxWidth: 'none' })
+                        .setHTML(buildEndpointPopup('destination', toLabel)))
+                    .addTo(map);
+
+                routeMarkersRef.current.push(startMarker, endMarker);
+
+                // Hover popup — remove any previous listeners first to prevent stacking
+                const hoverPopup = new mapboxgl.Popup({
+                    closeButton: false,
+                    closeOnClick: false,
+                    offset: 14,
+                    maxWidth: 'none',
+                    className: 'bm-hover-popup',
+                });
+
+                // Tear down previous handlers
+                if (hoverHandlers.enter) map.off('mouseenter', 'route-line', hoverHandlers.enter);
+                if (hoverHandlers.move)  map.off('mousemove',  'route-line', hoverHandlers.move);
+                if (hoverHandlers.leave) map.off('mouseleave', 'route-line', hoverHandlers.leave);
+
+                hoverHandlers.enter = (e) => {
+                    map.getCanvas().style.cursor = 'pointer';
+                    // Remove any existing instance before showing a new one
+                    hoverPopup.remove();
+                    hoverPopup
+                        .setLngLat(e.lngLat)
+                        .setHTML(buildRouteHoverPopup(fromLabel, toLabel, busNumbers))
+                        .addTo(map);
+                };
+                hoverHandlers.move  = (e) => { hoverPopup.setLngLat(e.lngLat); };
+                hoverHandlers.leave = () => {
+                    map.getCanvas().style.cursor = '';
+                    hoverPopup.remove();
+                };
+
+                map.on('mouseenter', 'route-line', hoverHandlers.enter);
+                map.on('mousemove',  'route-line', hoverHandlers.move);
+                map.on('mouseleave', 'route-line', hoverHandlers.leave);
+
+                // Fit bounds
+                const coords = geometry.coordinates as [number, number][];
+                const bounds = coords.reduce(
+                    (b, c) => b.extend(c),
+                    new mapboxgl.LngLatBounds(coords[0], coords[0])
+                );
+                map.fitBounds(bounds, { padding: 90, maxZoom: 14, duration: 900 });
+
+            } catch (err) {
+                console.error('Error drawing route:', err);
+            }
+        };
+
+        drawRoute();
+    }, [startCoords, endCoords, buses, startLabel, endLabel]);
+
+    return (
+        <motion.div
+            ref={mapContainer}
+            className="w-full h-full rounded-2xl overflow-hidden"
+            style={{ minHeight: '500px' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+        />
+    );
+}
