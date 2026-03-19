@@ -229,3 +229,71 @@ function buildRouteHoverPopup(from: string, to: string, busNumbers: string): str
         </div>` : ''}
     `, 215);
 }
+function buildEndpointPopup(type: 'pickup' | 'destination', label: string): string {
+    return CARD(`
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;">
+            ${SVG.pinW}
+            <span style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.32);
+                         letter-spacing:0.08em;text-transform:uppercase;">
+                ${type === 'pickup' ? 'Pickup Point' : 'Destination'}
+            </span>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#f8fafc;">${label}</div>
+    `, 165);
+}
+function buildBusPopup(bus: Bus): string {
+    const isOnTime = bus.status === 'on-time';
+    return CARD(`
+        <div style="display:flex;align-items:center;gap:10px;
+                    padding-bottom:11px;margin-bottom:11px;
+                    border-bottom:1px solid rgba(255,255,255,0.07);">
+            <div style="width:36px;height:36px;flex-shrink:0;
+                        background:rgba(255,255,255,0.06);border-radius:10px;
+                        display:flex;align-items:center;justify-content:center;">
+                ${SVG.busW}
+            </div>
+            <div>
+                <div style="font-size:9px;color:rgba(255,255,255,0.32);letter-spacing:0.09em;
+                             text-transform:uppercase;margin-bottom:2px;">Bus Number</div>
+                <div style="font-size:17px;font-weight:800;color:#f8fafc;letter-spacing:0.01em;">${bus.number}</div>
+            </div>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:10px 12px;margin-bottom:11px;">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;">
+                ${SVG.pinW}
+                <span style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:500;">${bus.startDestination}</span>
+            </div>
+            <div style="margin-left:6px;border-left:1.5px dashed rgba(255,255,255,0.1);
+                        height:10px;margin-bottom:4px;"></div>
+            <div style="display:flex;align-items:center;gap:7px;">
+                ${SVG.pinW}
+                <span style="font-size:12px;color:rgba(255,255,255,0.65);font-weight:500;">${bus.endDestination}</span>
+            </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:7px;">
+            ${isOnTime ? SVG.check : SVG.warn}
+            <span style="font-size:12px;font-weight:700;color:${isOnTime ? '#22c55e' : '#ef4444'};">
+                ${isOnTime ? 'On Time' : 'Delayed'}
+            </span>
+        </div>
+    `);
+}
+const routeMarkersRef: { current: mapboxgl.Marker[] } = { current: [] };
+// Store hover handlers so we can remove them before re-adding on redraw
+const hoverHandlers: {
+    enter?: (e: mapboxgl.MapMouseEvent) => void;
+    move?:  (e: mapboxgl.MapMouseEvent) => void;
+    leave?: () => void;
+} = {};
+
+interface BusMapProps {
+    buses: Bus[];
+    selectedBus?: Bus | null;
+    startCoords?: [number, number];
+    endCoords?: [number, number];
+    startLabel?: string;
+    endLabel?: string;
+}
