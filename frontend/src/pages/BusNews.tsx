@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, XIcon } from 'lucide-react';
 import { NewsCard } from '../components/NewsCard';
 import { mockNews, NewsItem } from '../utils/mockData';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { translate } from '../utils/translations';
 
 export function BusNews() {
