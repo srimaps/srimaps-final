@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { SearchBox } from '@mapbox/search-js-react';
 import { SearchIcon, MapPinIcon, BusIcon, ArrowUpDown} from 'lucide-react';
 import { BusMap } from '../components/BusMap';
-import { QuickBusButtons } from '../components/QuickBusButtons';
+import { QuickBusButtons } from '../components/QuickBusButton';
 import { mockBuses, Bus } from '../utils/mockData';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translate } from '../utils/translations';
