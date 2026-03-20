@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
+    "@mapbox/search-js-react": "^1.5.1",
     "framer-motion": "^11.5.4",
     "gsap": "^3.14.2",
     "leaflet": "^1.9.4",
