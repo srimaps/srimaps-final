@@ -1,9 +1,0 @@
-target/
-classes/
-*.class
-*.log
-*.jar
-*.war
-.idea/
-.vscode/
-.DS_Store
