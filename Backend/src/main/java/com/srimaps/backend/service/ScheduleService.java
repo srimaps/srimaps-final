@@ -18,3 +18,14 @@ public class ScheduleService {
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAllByOrderByDepartureTimeAsc();
     }
+    
+    public List<Schedule> getSchedulesByRouteNumber(String routeNumber) {
+        return scheduleRepository.findByRoute_RouteNumberOrderByDepartureTimeAsc(routeNumber);
+    }
+
+    public List<Schedule> getSchedulesByDestinations(String start, String end) {
+        return scheduleRepository
+                .findByStartDestinationIgnoreCaseAndEndDestinationIgnoreCaseOrderByDepartureTimeAsc(start, end);
+    }
+}
+    
