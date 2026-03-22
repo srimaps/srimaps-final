@@ -30,5 +30,9 @@ public class Bus {
     @Column(name = "capacity")
     private Integer capacity;
 
+    @Column(name = "status")
+    private String status = "ACTIVE";
+
+
 
 }
