@@ -6,3 +6,21 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+@Service
+public class AlertService {
+
+    private final AlertRepository alertRepository;
+
+    public AlertService(AlertRepository alertRepository) {
+        this.alertRepository = alertRepository;
+    }
+
+    public List<Alert> getAllAlerts() {
+        return alertRepository.findByExpiresAtIsNullOrExpiresAtAfterOrderByCreatedAtDesc(
+                LocalDateTime.now()
+        );
+    }
+
+
+}
