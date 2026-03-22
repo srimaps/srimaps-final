@@ -21,7 +21,24 @@ public class LostFoundService {
     }
 
 
+    public List<LostFoundItem> getItemsByType(String itemType) {
+        return lostFoundRepository.findByItemTypeOrderByReportedAtDesc(itemType.toUpperCase());
+    }
 
+    public List<LostFoundItem> getItemsByStatus(String status) {
+        return lostFoundRepository.findByStatusOrderByReportedAtDesc(status.toUpperCase());
+    }
+
+    public List<LostFoundItem> getItemsByRoute(String routeNumber) {
+        return lostFoundRepository.findByRoute_RouteNumberOrderByReportedAtDesc(routeNumber);
+    }
+
+    public List<LostFoundItem> getItemsByTypeAndRoute(String itemType, String routeNumber) {
+        return lostFoundRepository.findByItemTypeAndRoute_RouteNumberOrderByReportedAtDesc(
+                itemType.toUpperCase(),
+                routeNumber
+        );
+    }
 
 
 }
