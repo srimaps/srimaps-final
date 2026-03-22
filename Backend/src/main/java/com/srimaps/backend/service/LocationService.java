@@ -45,4 +45,14 @@ public class LocationService {
     public List<BusLocation> getLatestLocationsForSharingBuses() {
         List<BusLocation> allLocations = busLocationRepository.findAllByOrderByRecordedAtDesc();
         Map<Integer, BusLocation> latestPerBus = new LinkedHashMap<>();
+    or (BusLocation location : allLocations) {
+            if (location.getBus() != null
+                    && Boolean.TRUE.equals(location.getBus().getIsSharingLocation())
+                    && !latestPerBus.containsKey(location.getBus().getBusId())) {
+                latestPerBus.put(location.getBus().getBusId(), location);
+            }
+        }
+
+        return new ArrayList<>(latestPerBus.values());
+    }  
 }
