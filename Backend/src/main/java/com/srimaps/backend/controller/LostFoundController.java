@@ -17,3 +17,28 @@ public class LostFoundController {
     public LostFoundController(LostFoundService lostFoundService) {
         this.lostFoundService = lostFoundService;
     }
+
+@GetMapping
+    public List<LostFoundItem> getItems(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String routeNumber
+    ) {
+        if (type != null && !type.isBlank() && routeNumber != null && !routeNumber.isBlank()) {
+            return lostFoundService.getItemsByTypeAndRoute(type.trim(), routeNumber.trim());
+        }
+
+        if (type != null && !type.isBlank()) {
+            return lostFoundService.getItemsByType(type.trim());
+        }
+
+        if (status != null && !status.isBlank()) {
+            return lostFoundService.getItemsByStatus(status.trim());
+        }
+
+        if (routeNumber != null && !routeNumber.isBlank()) {
+            return lostFoundService.getItemsByRoute(routeNumber.trim());
+        }
+
+        return lostFoundService.getAllItems();
+    }
