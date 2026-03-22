@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import { motion } from 'framer-motion';
 import { Bus } from '../utils/mockData';
 import { getRoute } from '../utils/mapbox.directions';
+import { useTheme } from '../contexts/ThemeContext';
 
 const POPUP_STYLE_ID = 'busmap-popup-styles';
 if (typeof document !== 'undefined' && !document.getElementById(POPUP_STYLE_ID)) {
@@ -64,15 +65,16 @@ if (typeof document !== 'undefined' && !document.getElementById(POPUP_STYLE_ID))
 }
 
 //Dark wrapper
-const CARD = (inner: string, minWidth = 185) => `
+const CARD = (inner: string, minWidth = 185, dark = true) => `
     <div style="
-        background:#0f172a;
+        background:${dark ? '#0f172a' : '#ffffff'};
         border-radius:14px;
         padding:16px 18px;
         min-width:${minWidth}px;
-        box-shadow:0 24px 64px rgba(0,0,0,0.65),0 4px 16px rgba(0,0,0,0.4);
+        box-shadow:0 24px 64px rgba(0,0,0,${dark ? '0.65' : '0.12'}),0 4px 16px rgba(0,0,0,${dark ? '0.4' : '0.08'});
         font-family:'Segoe UI',system-ui,sans-serif;
-        color:#f8fafc;
+        color:${dark ? '#f8fafc' : '#0f172a'};
+        border:${dark ? 'none' : '1px solid rgba(0,0,0,0.08)'};
     ">${inner}</div>`;
 
 const SVG = {
@@ -300,7 +302,9 @@ interface BusMapProps {
 export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel, endLabel }: BusMapProps) {
     const mapContainer = useRef<HTMLDivElement | null>(null);
     const mapRef       = useRef<mapboxgl.Map | null>(null);
-    const markersRef   = useRef<mapboxgl.Marker[]>([]);
+    const markersRef = useRef<mapboxgl.Marker[]>([]);
+    const { theme } = useTheme();
+    const isDark = theme === 'dark';
 
     const center: [number, number] = selectedBus
         ? [selectedBus.currentLocation.lng, selectedBus.currentLocation.lat]
