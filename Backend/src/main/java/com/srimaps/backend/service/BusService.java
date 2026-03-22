@@ -31,8 +31,14 @@ public class BusService {
         return busRepository.findByRoute_StartDestinationIgnoreCaseAndRoute_EndDestinationIgnoreCase(start, end);
     }
 
+    public List<Bus> getCurrentlySharingBuses() {
+        return busRepository.findByIsSharingLocationTrue();
+    }
 
-
-
+    public Bus updateSharingStatus(Integer busId, boolean enabled) {
+        Bus bus = busRepository.findById(busId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bus not found with id: " + busId));
+        bus.setIsSharingLocation(enabled);
+        return busRepository.save(bus);
     
 }
