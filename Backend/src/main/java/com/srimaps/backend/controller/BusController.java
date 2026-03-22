@@ -12,13 +12,18 @@ public class BusController {
 
    private final BusService busService;
 
-    public BusController(BusService busService) {
-        this.busService = busService;
-    }
+   public BusController(BusService busService) {
+      this.busService = busService;
+   }
 
     @GetMapping
     public List<Bus> getAllBuses() {
-        return busService.getAllBuses();
-    }
+       return busService.getAllBuses();
+   }
+
+   @GetMapping("/{busId}")
+   public Bus getBusById(@PathVariable Integer busId) {
+      return busService.getBusById(busId);
+   }
 
 }
