@@ -7,5 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "buses")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Bus {
 }
