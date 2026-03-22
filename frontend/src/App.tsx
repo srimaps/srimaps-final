@@ -15,7 +15,7 @@ import { Schedule } from './pages/Schedule';
 import { LostAndFound } from './pages/LostAndFound';
 type Page = 'tracking' | 'news' | 'alerts' | 'schedule' | 'lostfound';
 function AppContent() {
-  const { role, setRole } = useUser();
+  const { role, setRole, driver } = useUser();
   const [currentPage, setCurrentPage] = useState<Page>('tracking');
   const renderPage = () => {
     switch (currentPage) {
@@ -41,16 +41,23 @@ function AppContent() {
       </div>);
 
   }
-  // Driver Login Screen
-  if (role === 'driver') {
+  if (role === 'driver' && !driver) {
+    return (
+      <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors">
+        <DriverLogin onBack={() => setRole(null)} />
+      </div>
+    );
+  }
+
+  if (role === 'driver' && driver) {
     return (
       <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors">
         <Header currentPage="tracking" onNavigate={() => {}} />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <DriverDashboard />
         </main>
-      </div>);
-
+      </div>
+    );
   }
   // Passenger View (Full Website)
   return (
