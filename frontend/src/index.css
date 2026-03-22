@@ -207,4 +207,25 @@ input[type='submit'],
   background: var(--color-secondary);
 }
 
-
+@media (pointer: coarse) {
+    body,
+    button,
+    a,
+    input[type='button'],
+    input[type='submit'],
+    .clickable {
+        cursor: auto !important;
+    }
+    .dark body,
+    .dark button,
+    .dark a,
+    .dark input[type='button'],
+    .dark input[type='submit'],
+    .dark .clickable {
+        cursor: auto !important;
+    }
+    .custom-cursor-outer,
+    .custom-cursor-inner {
+        display: none !important;
+    }
+}
