@@ -129,9 +129,9 @@ export const translations: Translations = {
     ta: 'விரைவு அணுகல்'
   },
   quickAccessNote: {
-    en: 'Click on bus 138 to view its location (other buses coming soon)',
-    si: 'එහි ස්ථානය බැලීමට 138 බස් මත ක්ලික් කරන්න (අනෙකුත් බස් ඉක්මනින්)',
-    ta: 'அதன் இருப்பிடத்தைப் பார்க்க பேருந்து 138 ஐ கிளிக் செய்யவும் (மற்ற பேருந்துகள் விரைவில்)'
+    en: 'Click on any of these routes to view its location.',
+    si: 'මෙම මාර්ගවලින් ඕනෑම එකක් මත ක්ලික් කර එහි පිහිටීම බලන්න.',
+    ta: 'அதன் இருப்பிடத்தைக் காண, இந்த வழித்தடங்களில் ஏதேனும் ஒன்றைக் கிளிக் செய்யவும்.'
   },
 
   // Navigation
