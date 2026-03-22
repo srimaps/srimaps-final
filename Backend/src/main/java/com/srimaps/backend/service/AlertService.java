@@ -9,5 +9,9 @@ import java.util.List;
 public interface AlertRepository extends JpaRepository<Alert, Integer> {
 
     List<Alert> findAllByOrderByCreatedAtDesc();
+    
+    List<Alert> findByRoute_RouteNumberOrderByCreatedAtDesc(String routeNumber);
+
+    List<Alert> findByExpiresAtIsNullOrExpiresAtAfterOrderByCreatedAtDesc(LocalDateTime now);
 
 }
