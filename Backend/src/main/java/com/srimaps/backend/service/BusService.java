@@ -15,6 +15,9 @@ public class BusService {
     public BusService(BusRepository busRepository) {
         this.busRepository = busRepository;
     }
+    public List<Bus> getAllBuses() {
+        return busRepository.findAll();
+    }
 
     
 }
