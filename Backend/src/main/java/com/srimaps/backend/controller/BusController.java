@@ -9,4 +9,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/buses")
 public class BusController {
+
+   private final BusService busService;
+
+    public BusController(BusService busService) {
+        this.busService = busService;
+    }
 }
