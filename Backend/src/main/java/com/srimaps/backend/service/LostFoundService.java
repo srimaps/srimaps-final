@@ -39,6 +39,29 @@ public class LostFoundService {
                 routeNumber
         );
     }
+    
+    public LostFoundItem createItem(LostFoundRequest request) {
+        String normalizedType = request.getItemType().trim().toUpperCase();
+
+        if (!normalizedType.equals("LOST") && !normalizedType.equals("FOUND")) {
+            throw new IllegalArgumentException("Item type must be LOST or FOUND");
+        }
+
+        LostFoundItem item = new LostFoundItem();
+        item.setItemType(normalizedType);
+        item.setItemName(request.getItemName().trim());
+        item.setDescription(request.getDescription().trim());
+        item.setContactInfo(request.getContactInfo().trim());
+        item.setReportedAt(LocalDateTime.now());
+        item.setStatus("OPEN");
+
+        if (request.getRouteId() != null) {
+            Route route = routeRepository.findById(request.getRouteId())
+                    .orElseThrow(() -> new IllegalArgumentException("Route not found"));
+            item.setRoute(route);
+        }
+
+    }
 
 
 }
