@@ -17,6 +17,8 @@ public class NewsController {
     }
     @GetMapping
     public List<News> getNews((@RequestParam(required = false) String routeNumber) {
+        if (routeNumber != null && !routeNumber.isBlank()) {
+    }
         return null;
     }
 }
