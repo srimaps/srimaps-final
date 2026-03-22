@@ -44,8 +44,9 @@ public class BusController {
        return busService.getCurrentlySharingBuses();
     }
 
-   
-        
-
+   @PutMapping("/{busId}/sharing")
+   public Bus updateSharing(@PathVariable Integer busId, @RequestParam boolean enabled) {
+      return busService.updateSharingStatus(busId, enabled);
+   }
 
 }
