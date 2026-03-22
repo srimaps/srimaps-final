@@ -12,8 +12,14 @@ public class LostFoundRequest {
 
   @NotBlank(message = "Item name is required")
   private String itemName;
+
+  @NotBlank(message = "Description is required")
   private String description;
+
+  
   private String contactInfo;
+
+  
   private Integer routeId;
 
 } 
