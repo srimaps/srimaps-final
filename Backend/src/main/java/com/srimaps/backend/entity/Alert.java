@@ -21,3 +21,13 @@ public class Alert {
 
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "message", nullable = false, columnDefinition = "TEXT")
+    private String message;
+
+    @Column(name = "severity")
+    private String severity = "MEDIUM";
+
+    @ManyToOne
+    @JoinColumn(name = "route_id")
+    private Route route;
