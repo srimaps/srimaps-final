@@ -36,6 +36,10 @@ public class DriverService {
                 "Login successful"
         );
     }
+    public Driver getDriverById(Integer driverId) {
+        return driverRepository.findById(driverId)
+                .orElseThrow(() -> new ResourceNotFoundException("Driver not found with id: " + driverId));
+    }
 
 
 
