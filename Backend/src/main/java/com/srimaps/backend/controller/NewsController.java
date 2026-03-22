@@ -6,3 +6,7 @@ import com.srimaps.backend.service.NewsService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+@RestController
+@RequestMapping("/api/news")
+public class NewsController {
