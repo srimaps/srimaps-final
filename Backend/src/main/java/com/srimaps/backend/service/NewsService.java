@@ -9,3 +9,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+@Service
+public class NewsService {
+
+    private final NewsRepository newsRepository;
+    private final RouteRepository routeRepository;
+
+    public NewsService(NewsRepository newsRepository, RouteRepository routeRepository) {
+        this.newsRepository = newsRepository;
+        this.routeRepository = routeRepository;
+    }
+
+    public List<News> getAllNews() {
+        return newsRepository.findAllByOrderByPostedAtDesc();
+    }
+
+    public List<News> getNewsByRoute(String routeNumber) {
+        return newsRepository.findByRoute_RouteNumberOrderByPostedAtDesc(routeNumber);
+    }
