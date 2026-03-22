@@ -17,4 +17,10 @@ public class DriverController {
       this.driverService = driverService;
   }
 
+  @PostMapping("/login")
+  public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+      return driverService.login(request);
+  }
+
+
 }
