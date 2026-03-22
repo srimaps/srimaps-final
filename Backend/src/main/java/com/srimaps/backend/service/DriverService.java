@@ -15,6 +15,28 @@ public class DriverService {
     public DriverService(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }
+    public LoginResponse login(LoginRequest request) {
+        Driver driver = driverRepository
+                .findByUsernameAndPasswordAndIsActiveTrue(request.getUsername(), request.getPassword())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+
+        Integer busId = driver.getBus() != null ? driver.getBus().getBusId() : null;
+        String busNumber = driver.getBus() != null ? driver.getBus().getBusNumber() : null;
+        String routeNumber = (driver.getBus() != null && driver.getBus().getRoute() != null)
+                ? driver.getBus().getRoute().getRouteNumber()
+                : null;
+
+        return new LoginResponse(
+                driver.getDriverId(),
+                driver.getFullName(),
+                driver.getUsername(),
+                busId,
+                busNumber,
+                routeNumber,
+                "Login successful"
+        );
+    }
+
 
 
 }
