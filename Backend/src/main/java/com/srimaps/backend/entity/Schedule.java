@@ -13,3 +13,15 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Schedule {
+   
+  @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "schedule_id")
+    private Integer scheduleId;
+
+    @ManyToOne
+    @JoinColumn(name = "route_id", nullable = false)
+    private Route route;
+
+    @Column(name = "departure_time", nullable = false)
+    private LocalTime departureTime;
