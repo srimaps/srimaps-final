@@ -15,4 +15,8 @@ public class NewsController {
     public NewsController(NewsService newsService) {
          this.newsService = newsService;
     }
+    @GetMapping
+    public List<News> getNews() {
+        return null;
+}
 }
