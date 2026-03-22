@@ -20,6 +20,6 @@ public class NewsController {
         if (routeNumber != null && !routeNumber.isBlank()) {
             return newsService.getNewsByRoute(routeNumber);
         }
-        return null;
+        return newsService.getAllNews();
     }
 }
