@@ -55,8 +55,8 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 
           <div className="flex items-center justify-center mb-6">
-            <div className="bg-primary-100 dark:bg-primary-900/30 w-16 h-16 rounded-full flex items-center justify-center">
-              <TruckIcon className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+            <div className="bg-teal-100 dark:bg-teal-900/30 w-16 h-16 rounded-full flex items-center justify-center">
+              <TruckIcon className="w-8 h-8 text-teal-600 dark:text-teal-400" />
             </div>
           </div>
 
@@ -78,7 +78,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="kamal"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" />
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all" />
 
             </div>
 
@@ -92,7 +92,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" />
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all" />
 
             </div>
 
@@ -123,7 +123,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
               whileTap={{
                 scale: 0.98
               }}
-              className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-900 transition-colors">
+              className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors">
 
               {translate('login', language)}
             </motion.button>
@@ -141,4 +141,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
       </div>
     </div>
   );
+
 }
+
+
