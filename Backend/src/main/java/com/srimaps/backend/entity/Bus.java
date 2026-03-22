@@ -33,6 +33,7 @@ public class Bus {
     @Column(name = "status")
     private String status = "ACTIVE";
 
-
+    @Column(name = "is_sharing_location")
+    private Boolean isSharingLocation = false;
 
 }
