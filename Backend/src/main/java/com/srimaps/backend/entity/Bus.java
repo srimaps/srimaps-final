@@ -23,4 +23,8 @@ public class Bus {
     @Column(name = "plate_number", nullable = false, unique = true)
     private String plateNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "route_id", nullable = false)
+    private Route route;
+
 }
