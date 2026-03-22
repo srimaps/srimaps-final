@@ -17,4 +17,10 @@ public class Bus {
     @Column(name = "bus_id")
     private Integer busId;
 
+    @Column(name = "bus_number", nullable = false, unique = true)
+    private String busNumber;
+
+    @Column(name = "plate_number", nullable = false, unique = true)
+    private String plateNumber;
+
 }
