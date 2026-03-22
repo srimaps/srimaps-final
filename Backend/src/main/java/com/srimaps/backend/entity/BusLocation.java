@@ -31,6 +31,9 @@ public class BusLocation {
     @Column(name = "speed")
     private Double speed = 0.0;
 
+    @Column(name = "recorded_at")
+    private LocalDateTime recordedAt = LocalDateTime.now();
+
 
 }
 
