@@ -7,5 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "bus_locations")
 public class BusLocation {
 }
