@@ -60,7 +60,7 @@ public class LostFoundService {
                     .orElseThrow(() -> new IllegalArgumentException("Route not found"));
             item.setRoute(route);
         }
-
+        return lostFoundRepository.save(item);
     }
 
 
