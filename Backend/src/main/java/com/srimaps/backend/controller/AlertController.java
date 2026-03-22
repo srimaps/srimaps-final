@@ -18,3 +18,12 @@ public class AlertController {
     public AlertController(AlertService alertService) {
         this.alertService = alertService;
     }
+
+    @GetMapping
+    public List<Alert> getAlerts(@RequestParam(required = false) String routeNumber) {
+    if (routeNumber != null && !routeNumber.isBlank()) {
+        return alertService.getAlertsByRoute(routeNumber.trim());
+    }
+    return alertService.getAllAlerts();
+}
+}
