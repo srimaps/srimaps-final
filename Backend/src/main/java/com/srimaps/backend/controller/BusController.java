@@ -39,5 +39,13 @@ public class BusController {
       return busService.searchByDestinations(start, end);
    }
 
+    @GetMapping("/sharing")
+    public List<Bus> getSharingBuses() {
+       return busService.getCurrentlySharingBuses();
+    }
+
+   
+        
+
 
 }
