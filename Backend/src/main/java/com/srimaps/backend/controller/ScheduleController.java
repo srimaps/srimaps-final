@@ -25,3 +25,14 @@ public class ScheduleController {
             @RequestParam(required = false) String start,
             @RequestParam(required = false) String end
     ) {
+        if (routeNumber != null && !routeNumber.isBlank()) {
+            return scheduleService.getSchedulesByRouteNumber(routeNumber);
+        }
+
+        if (start != null && !start.isBlank() && end != null && !end.isBlank()) {
+            return scheduleService.getSchedulesByDestinations(start, end);
+        }
+
+        return scheduleService.getAllSchedules();
+    }
+}
