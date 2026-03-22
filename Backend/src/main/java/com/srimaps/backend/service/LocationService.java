@@ -38,4 +38,11 @@ public class LocationService {
         return busLocationRepository.findTopByBus_BusIdOrderByRecordedAtDesc(busId)
                 .orElseThrow(() -> new ResourceNotFoundException("No location found for bus id: " + busId));
     }
+  public List<BusLocation> getLocationHistory(Integer busId) {
+        return busLocationRepository.findByBus_BusIdOrderByRecordedAtDesc(busId);
+    }
+
+    public List<BusLocation> getLatestLocationsForSharingBuses() {
+        List<BusLocation> allLocations = busLocationRepository.findAllByOrderByRecordedAtDesc();
+        Map<Integer, BusLocation> latestPerBus = new LinkedHashMap<>();
 }
