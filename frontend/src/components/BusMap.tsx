@@ -41,7 +41,7 @@ if (typeof document !== 'undefined' && !document.getElementById(POPUP_STYLE_ID))
             height: 0;
             border-left: 9px solid transparent;
             border-right: 9px solid transparent;
-            border-top: 9px solid #0f172a;
+            border-top: 9px solid var(--popup-bg, #0f172a);
             pointer-events: none;
         }
 
@@ -185,7 +185,7 @@ function createBusMarkerEl(status: string, number: string): HTMLElement {
     return el;
 }
 
-function buildRouteHoverPopup(from: string, to: string, busNumbers: string): string {
+function buildRouteHoverPopup(from: string, to: string, busNumbers: string, dark=true): string {
     return CARD(`
         <div style="display:flex;align-items:center;gap:8px;
                     padding-bottom:11px;margin-bottom:12px;
@@ -229,9 +229,9 @@ function buildRouteHoverPopup(from: string, to: string, busNumbers: string): str
             ${SVG.busW}
             <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.8);">${busNumbers}</span>
         </div>` : ''}
-    `, 215);
+    `, 215, dark);
 }
-function buildEndpointPopup(type: 'pickup' | 'destination', label: string): string {
+function buildEndpointPopup(type: 'pickup' | 'destination', label: string, dark=true): string {
     return CARD(`
         <div style="display:flex;align-items:center;gap:7px;margin-bottom:7px;">
             ${SVG.pinW}
@@ -241,9 +241,9 @@ function buildEndpointPopup(type: 'pickup' | 'destination', label: string): stri
             </span>
         </div>
         <div style="font-size:14px;font-weight:700;color:#f8fafc;">${label}</div>
-    `, 165);
+    `, 165, dark);
 }
-function buildBusPopup(bus: Bus): string {
+function buildBusPopup(bus: Bus, dark=true): string {
     const isOnTime = bus.status === 'on-time';
     return CARD(`
         <div style="display:flex;align-items:center;gap:10px;
@@ -281,7 +281,7 @@ function buildBusPopup(bus: Bus): string {
                 ${isOnTime ? 'On Time' : 'Delayed'}
             </span>
         </div>
-    `);
+    `, 185, dark);
 }
 const routeMarkersRef: { current: mapboxgl.Marker[] } = { current: [] };
 // Store hover handlers so we can remove them before re-adding on redraw
@@ -324,6 +324,22 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
         return () => { mapRef.current?.remove(); mapRef.current = null; };
     }, []);
 
+    //new
+    useEffect(() => {
+        const map = mapRef.current;
+        if (!map) return;
+        const newStyle = isDark
+            ? 'mapbox://styles/mapbox/dark-v11'
+            : 'mapbox://styles/mapbox/light-v11';
+        map.setStyle(newStyle);
+        // Re-draw route after style reloads (setStyle wipes all custom layers)
+        map.once('styledata', () => {
+            if (startCoords && endCoords) {
+                map.fire('draw-route');
+            }
+        });
+    }, [isDark]);
+    
     // ── Bus markers
     useEffect(() => {
         if (!mapRef.current) return;
@@ -333,7 +349,7 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
         buses.forEach(bus => {
             const el = createBusMarkerEl(bus.status, bus.number);
             const popup = new mapboxgl.Popup({ offset: 38, maxWidth: 'none' })
-                .setHTML(buildBusPopup(bus));
+                .setHTML(buildBusPopup(bus, isDark));
             const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
                 .setLngLat([bus.currentLocation.lng, bus.currentLocation.lat])
                 .setPopup(popup)
@@ -413,7 +429,7 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
                 const startMarker = new mapboxgl.Marker({ element: startEl, anchor: 'bottom' })
                     .setLngLat(startCoords)
                     .setPopup(new mapboxgl.Popup({ offset: 18, maxWidth: 'none' })
-                        .setHTML(buildEndpointPopup('pickup', fromLabel)))
+                        .setHTML(buildEndpointPopup('pickup', fromLabel, isDark)))
                     .addTo(map);
 
                 // Destination
@@ -421,7 +437,7 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
                 const endMarker = new mapboxgl.Marker({ element: endEl, anchor: 'bottom' })
                     .setLngLat(endCoords)
                     .setPopup(new mapboxgl.Popup({ offset: 18, maxWidth: 'none' })
-                        .setHTML(buildEndpointPopup('destination', toLabel)))
+                        .setHTML(buildEndpointPopup('destination', toLabel, isDark)))
                     .addTo(map);
 
                 routeMarkersRef.current.push(startMarker, endMarker);
@@ -446,7 +462,7 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
                     hoverPopup.remove();
                     hoverPopup
                         .setLngLat(e.lngLat)
-                        .setHTML(buildRouteHoverPopup(fromLabel, toLabel, busNumbers))
+                        .setHTML(buildRouteHoverPopup(fromLabel, toLabel, busNumbers, isDark))
                         .addTo(map);
                 };
                 hoverHandlers.move  = (e) => { hoverPopup.setLngLat(e.lngLat); };
@@ -473,7 +489,7 @@ export function BusMap({ buses, selectedBus, startCoords, endCoords, startLabel,
         };
 
         drawRoute();
-    }, [startCoords, endCoords, buses, startLabel, endLabel]);
+    }, [startCoords, endCoords, buses, startLabel, endLabel, isDark]);
 
     return (
         <motion.div
