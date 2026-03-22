@@ -19,5 +19,12 @@ public class BusService {
         return busRepository.findAll();
     }
 
+    public Bus getBusById(Integer busId) {
+        return busRepository.findById(busId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bus not found with id: " + busId));
+    }
+
+
+
     
 }
