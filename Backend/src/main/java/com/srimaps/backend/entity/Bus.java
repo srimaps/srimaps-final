@@ -27,4 +27,8 @@ public class Bus {
     @JoinColumn(name = "route_id", nullable = false)
     private Route route;
 
+    @Column(name = "capacity")
+    private Integer capacity;
+
+
 }
