@@ -13,3 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Alert {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "alert_id")
+    private Integer alertId;
+
+    @Column(name = "title", nullable = false)
+    private String title;
