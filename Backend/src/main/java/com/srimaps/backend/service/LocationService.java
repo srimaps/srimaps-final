@@ -34,4 +34,8 @@ public class LocationService {
 
         return busLocationRepository.save(location);
     }
+  public BusLocation getLatestLocation(Integer busId) {
+        return busLocationRepository.findTopByBus_BusIdOrderByRecordedAtDesc(busId)
+                .orElseThrow(() -> new ResourceNotFoundException("No location found for bus id: " + busId));
+    }
 }
