@@ -12,10 +12,14 @@ public class LostFoundService {
     private final LostFoundRepository lostFoundRepository;
     private final RouteRepository routeRepository;
 
-        public LostFoundService(LostFoundRepository lostFoundRepository, RouteRepository routeRepository) {
+    public LostFoundService(LostFoundRepository lostFoundRepository, RouteRepository routeRepository) {
         this.lostFoundRepository = lostFoundRepository;
         this.routeRepository = routeRepository;
     }
+    public List<LostFoundItem> getAllItems() {
+        return lostFoundRepository.findAllByOrderByReportedAtDesc();
+    }
+
 
 
 
