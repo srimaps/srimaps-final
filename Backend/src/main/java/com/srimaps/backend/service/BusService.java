@@ -23,7 +23,12 @@ public class BusService {
         return busRepository.findById(busId)
                 .orElseThrow(() -> new ResourceNotFoundException("Bus not found with id: " + busId));
     }
+    public List<Bus> searchByRouteNumber(String routeNumber) {
+        return busRepository.findByRoute_RouteNumber(routeNumber);
+    }
 
+
+    }
 
 
     
