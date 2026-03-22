@@ -23,7 +23,7 @@ public class NewsController {
         return newsService.getAllNews();
     }
     @PostMapping
-    public News createNews() {
+    public News createNews(@RequestBody NewsRequest request) {
         return null;
 }
 }
