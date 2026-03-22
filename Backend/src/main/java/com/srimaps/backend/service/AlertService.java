@@ -21,6 +21,8 @@ public class AlertService {
                 LocalDateTime.now()
         );
     }
-
+        public List<Alert> getAlertsByRoute(String routeNumber) {
+        return alertRepository.findByRoute_RouteNumberOrderByCreatedAtDesc(routeNumber);
+    }
 
 }
