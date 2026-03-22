@@ -31,4 +31,13 @@ public class BusController {
       return busService.searchByRouteNumber(routeNumber);
    }
 
+   @GetMapping("/search-by-destination")
+   public List<Bus> searchByDestination(
+         @RequestParam String start,
+         @RequestParam String end
+   ) {
+      return busService.searchByDestinations(start, end);
+   }
+
+
 }
