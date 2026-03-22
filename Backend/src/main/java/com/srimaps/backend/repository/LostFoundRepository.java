@@ -12,7 +12,9 @@ public interface LostFoundRepository extends JpaRepository<LostFoundItem, Intege
     List<LostFoundItem> findByItemTypeOrderByReportedAtDesc(String itemType);
     
     List<LostFoundItem> findByStatusOrderByReportedAtDesc(String status);
+    
+    List<LostFoundItem> findByRoute_RouteNumberOrderByReportedAtDesc(String routeNumber);
 
-
+    List<LostFoundItem> findByItemTypeAndRoute_RouteNumberOrderByReportedAtDesc(String itemType, String routeNumber);
 
 }
