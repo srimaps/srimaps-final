@@ -35,3 +35,9 @@ public class Schedule {
     @Column(name = "end_destination", nullable = false)
     private String endDestination;
 
+    @Column(name = "bus_stop")
+    private String busStop;
+
+    @Column(name = "day_type")
+    private String dayType = "WEEKDAY";
+}
