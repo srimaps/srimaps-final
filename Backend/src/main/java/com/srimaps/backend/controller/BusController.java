@@ -26,4 +26,9 @@ public class BusController {
       return busService.getBusById(busId);
    }
 
+   @GetMapping("/search")
+   public List<Bus> searchByRoute(@RequestParam String routeNumber) {
+      return busService.searchByRouteNumber(routeNumber);
+   }
+
 }
