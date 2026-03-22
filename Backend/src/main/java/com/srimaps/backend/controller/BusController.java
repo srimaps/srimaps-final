@@ -15,4 +15,10 @@ public class BusController {
     public BusController(BusService busService) {
         this.busService = busService;
     }
+
+    @GetMapping
+    public List<Bus> getAllBuses() {
+        return busService.getAllBuses();
+    }
+
 }
