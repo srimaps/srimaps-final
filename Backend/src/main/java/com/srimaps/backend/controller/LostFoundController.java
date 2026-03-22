@@ -7,3 +7,13 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+@RestController
+@RequestMapping("/api/lost-found")
+public class LostFoundController {
+
+    private final LostFoundService lostFoundService;
+
+    public LostFoundController(LostFoundService lostFoundService) {
+        this.lostFoundService = lostFoundService;
+    }
