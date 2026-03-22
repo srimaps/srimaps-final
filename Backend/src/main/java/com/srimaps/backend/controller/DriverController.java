@@ -7,5 +7,7 @@ import com.srimaps.backend.service.DriverService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/api/drivers")
 public class DriverController {
 }
