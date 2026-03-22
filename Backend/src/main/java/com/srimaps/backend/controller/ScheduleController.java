@@ -18,3 +18,10 @@ public class ScheduleController {
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
+
+    @GetMapping
+    public List<Schedule> getSchedules(
+            @RequestParam(required = false) String routeNumber,
+            @RequestParam(required = false) String start,
+            @RequestParam(required = false) String end
+    ) {
