@@ -1,17 +1,8 @@
-package com.srimaps.backend.repository;
+package com.srimaps.backend.service;
 
 import com.srimaps.backend.entity.Alert;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.srimaps.backend.repository.AlertRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-public interface AlertRepository extends JpaRepository<Alert, Integer> {
-
-    List<Alert> findAllByOrderByCreatedAtDesc();
-    
-    List<Alert> findByRoute_RouteNumberOrderByCreatedAtDesc(String routeNumber);
-
-    List<Alert> findByExpiresAtIsNullOrExpiresAtAfterOrderByCreatedAtDesc(LocalDateTime now);
-
-}
