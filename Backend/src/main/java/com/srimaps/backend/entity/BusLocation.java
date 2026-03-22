@@ -9,5 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bus_locations")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BusLocation {
 }
