@@ -28,3 +28,26 @@ public class NewsService {
     public List<News> getNewsByRoute(String routeNumber) {
         return newsRepository.findByRoute_RouteNumberOrderByPostedAtDesc(routeNumber);
     }
+    
+    public News createNews(NewsRequest request) {
+        News news = new News();
+        news.setTitle(request.getTitle().trim());
+        news.setDescription(request.getDescription().trim());
+        news.setPostedBy(
+                request.getPostedBy() != null && !request.getPostedBy().isBlank()
+                        ? request.getPostedBy().trim()
+                        : "Admin"
+        );
+        news.setPostedAt(LocalDateTime.now());
+
+        if (request.getRouteId() != null) {
+            Route route = routeRepository.findById(request.getRouteId())
+                    .orElseThrow(() -> new IllegalArgumentException("Route not found"));
+            news.setRoute(route);
+        }
+
+        return newsRepository.save(news);
+    }
+}    
+
+
