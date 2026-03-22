@@ -13,4 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class LocationService {}
+public class LocationService {
+  private final BusLocationRepository busLocationRepository;
+    private final BusRepository busRepository;
+
+    public LocationService(BusLocationRepository busLocationRepository, BusRepository busRepository) {
+        this.busLocationRepository = busLocationRepository;
+        this.busRepository = busRepository;
+    }
+}
