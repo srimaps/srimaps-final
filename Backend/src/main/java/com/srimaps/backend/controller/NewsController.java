@@ -16,7 +16,7 @@ public class NewsController {
          this.newsService = newsService;
     }
     @GetMapping
-    public List<News> getNews() {
+    public List<News> getNews((@RequestParam(required = false) String routeNumber) {
         return null;
-}
+    }
 }
