@@ -9,6 +9,12 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
   
     List<Schedule> findAllByOrderByDepartureTimeAsc();
 
+    List<Schedule> findByRoute_RouteNumberOrderByDepartureTimeAsc(String routeNumber);
+
+    List<Schedule> findByStartDestinationIgnoreCaseAndEndDestinationIgnoreCaseOrderByDepartureTimeAsc(
+            String startDestination,
+            String endDestination
+    );
 
 
 }
