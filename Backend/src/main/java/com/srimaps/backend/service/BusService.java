@@ -27,8 +27,11 @@ public class BusService {
         return busRepository.findByRoute_RouteNumber(routeNumber);
     }
 
-
+    public List<Bus> searchByDestinations(String start, String end) {
+        return busRepository.findByRoute_StartDestinationIgnoreCaseAndRoute_EndDestinationIgnoreCase(start, end);
     }
+
+
 
 
     
