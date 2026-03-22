@@ -21,4 +21,17 @@ public class LocationService {
         this.busLocationRepository = busLocationRepository;
         this.busRepository = busRepository;
     }
+   public BusLocation addLocation(Integer busId, LocationRequest request) {
+        Bus bus = busRepository.findById(busId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bus not found with id: " + busId));
+
+        BusLocation location = new BusLocation();
+        location.setBus(bus);
+        location.setLatitude(request.getLatitude());
+        location.setLongitude(request.getLongitude());
+        location.setSpeed(request.getSpeed() != null ? request.getSpeed() : 0.0);
+        location.setRecordedAt(LocalDateTime.now());
+
+        return busLocationRepository.save(location);
+    }
 }
