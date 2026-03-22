@@ -31,3 +31,10 @@ public class Alert {
     @ManyToOne
     @JoinColumn(name = "route_id")
     private Route route;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "expires_at")
+    private LocalDateTime expiresAt;
+}
