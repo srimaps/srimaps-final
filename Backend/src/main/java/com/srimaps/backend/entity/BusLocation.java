@@ -28,6 +28,10 @@ public class BusLocation {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
+    @Column(name = "speed")
+    private Double speed = 0.0;
+
+
 }
 
   
