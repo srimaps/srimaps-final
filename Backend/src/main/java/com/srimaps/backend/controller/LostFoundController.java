@@ -42,3 +42,9 @@ public class LostFoundController {
 
         return lostFoundService.getAllItems();
     }
+
+@PostMapping
+    public LostFoundItem createItem(@Valid @RequestBody LostFoundRequest request) {
+        return lostFoundService.createItem(request);
+    }
+}
