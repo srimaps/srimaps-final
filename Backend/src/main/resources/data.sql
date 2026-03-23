@@ -32,3 +32,8 @@ INSERT INTO alerts (alert_id, title, message, severity, route_id, created_at, ex
 (1, 'Arrival Alert', 'Bus approaching Malabe Junction in 5 minutes', 'MEDIUM', 1, NOW(), DATE_ADD(NOW(), INTERVAL 1 DAY)),
 (2, 'Delay Alert', 'Route 120 delayed by 15 minutes due to traffic', 'HIGH', 3, NOW(), DATE_ADD(NOW(), INTERVAL 1 DAY))
 ON DUPLICATE KEY UPDATE title=VALUES(title);
+
+INSERT INTO lost_found_items (item_id, item_type, item_name, description, contact_info, route_id, reported_at, status) VALUES
+(1, 'LOST', 'Black Backpack', 'Black backpack with laptop inside', '0771234567', 1, NOW(), 'OPEN'),
+(2, 'FOUND', 'Wallet', 'Brown leather wallet with ID cards inside', '0779876543', 3, NOW(), 'OPEN')
+ON DUPLICATE KEY UPDATE item_name=VALUES(item_name);
