@@ -30,3 +30,15 @@ CREATE TABLE IF NOT EXISTS drivers (
     is_active BOOLEAN DEFAULT TRUE,
     CONSTRAINT fk_drivers_bus FOREIGN KEY (bus_id) REFERENCES buses(bus_id)
 );
+
+CREATE TABLE IF NOT EXISTS schedules (
+    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
+    route_id INT NOT NULL,
+    departure_time TIME NOT NULL,
+    arrival_time TIME NOT NULL,
+    start_destination VARCHAR(255) NOT NULL,
+    end_destination VARCHAR(255) NOT NULL,
+    bus_stop VARCHAR(255),
+    day_type VARCHAR(50) DEFAULT 'WEEKDAY',
+    CONSTRAINT fk_schedules_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
+);
