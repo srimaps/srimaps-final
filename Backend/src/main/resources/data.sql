@@ -27,3 +27,8 @@ INSERT INTO news (news_id, title, description, route_id, posted_by, posted_at) V
 (1, 'New Express Service on Route 138', 'Starting Monday, Route 138 will have express services during peak hours.', 1, 'Admin', NOW()),
 (2, 'Route 177 Schedule Update', 'Due to road construction, Route 177 may have slight delays.', 2, 'Admin', NOW())
 ON DUPLICATE KEY UPDATE title=VALUES(title);
+
+INSERT INTO alerts (alert_id, title, message, severity, route_id, created_at, expires_at) VALUES
+(1, 'Arrival Alert', 'Bus approaching Malabe Junction in 5 minutes', 'MEDIUM', 1, NOW(), DATE_ADD(NOW(), INTERVAL 1 DAY)),
+(2, 'Delay Alert', 'Route 120 delayed by 15 minutes due to traffic', 'HIGH', 3, NOW(), DATE_ADD(NOW(), INTERVAL 1 DAY))
+ON DUPLICATE KEY UPDATE title=VALUES(title);
