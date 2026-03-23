@@ -37,3 +37,9 @@ INSERT INTO lost_found_items (item_id, item_type, item_name, description, contac
 (1, 'LOST', 'Black Backpack', 'Black backpack with laptop inside', '0771234567', 1, NOW(), 'OPEN'),
 (2, 'FOUND', 'Wallet', 'Brown leather wallet with ID cards inside', '0779876543', 3, NOW(), 'OPEN')
 ON DUPLICATE KEY UPDATE item_name=VALUES(item_name);
+
+INSERT INTO bus_locations (location_id, bus_id, latitude, longitude, speed, recorded_at) VALUES
+(1, 1, 6.9271, 79.8612, 35.0, NOW()),
+(2, 2, 6.9344, 79.9850, 30.0, NOW()),
+(3, 3, 6.8013, 79.9220, 20.0, NOW())
+ON DUPLICATE KEY UPDATE latitude=VALUES(latitude), longitude=VALUES(longitude), speed=VALUES(speed), recorded_at=VALUES(recorded_at);
