@@ -75,3 +75,13 @@ CREATE TABLE IF NOT EXISTS lost_found_items (
     status VARCHAR(50) DEFAULT 'OPEN',
     CONSTRAINT fk_lostfound_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
 );
+
+CREATE TABLE IF NOT EXISTS bus_locations (
+    location_id INT AUTO_INCREMENT PRIMARY KEY,
+    bus_id INT NOT NULL,
+    latitude DOUBLE NOT NULL,
+    longitude DOUBLE NOT NULL,
+    speed DOUBLE DEFAULT 0,
+    recorded_at DATETIME,
+    CONSTRAINT fk_locations_bus FOREIGN KEY (bus_id) REFERENCES buses(bus_id)
+);
