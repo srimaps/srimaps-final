@@ -15,3 +15,10 @@ INSERT INTO drivers (driver_id, full_name, email, phone, license_number, usernam
 (2, 'Sunil Silva', 'sunil@example.com', '0779876543', 'LIC177', 'sunil', 'driver177', 2, TRUE),
 (3, 'Nimal Fernando', 'nimal@example.com', '0774567890', 'LIC120', 'nimal', 'driver120', 3, TRUE)
 ON DUPLICATE KEY UPDATE username=VALUES(username);
+
+INSERT INTO schedules (schedule_id, route_id, departure_time, arrival_time, start_destination, end_destination, bus_stop, day_type) VALUES
+(1, 1, '06:00:00', '07:00:00', 'Colombo Fort', 'Malabe', 'Fort', 'WEEKDAY'),
+(2, 1, '07:30:00', '08:30:00', 'Colombo Fort', 'Malabe', 'Fort', 'WEEKDAY'),
+(3, 2, '06:30:00', '07:30:00', 'Colombo Fort', 'Kaduwela', 'Fort', 'WEEKDAY'),
+(4, 3, '07:00:00', '08:00:00', 'Colombo Fort', 'Piliyandala', 'Fort', 'WEEKDAY')
+ON DUPLICATE KEY UPDATE route_id=VALUES(route_id);
