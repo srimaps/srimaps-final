@@ -52,3 +52,14 @@ CREATE TABLE IF NOT EXISTS news (
     posted_at DATETIME,
     CONSTRAINT fk_news_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
 );
+
+CREATE TABLE IF NOT EXISTS alerts (
+    alert_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    severity VARCHAR(50) DEFAULT 'MEDIUM',
+    route_id INT NULL,
+    created_at DATETIME,
+    expires_at DATETIME,
+    CONSTRAINT fk_alerts_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
+);
