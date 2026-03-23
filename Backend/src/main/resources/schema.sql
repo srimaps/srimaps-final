@@ -42,3 +42,13 @@ CREATE TABLE IF NOT EXISTS schedules (
     day_type VARCHAR(50) DEFAULT 'WEEKDAY',
     CONSTRAINT fk_schedules_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
 );
+
+CREATE TABLE IF NOT EXISTS news (
+    news_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    route_id INT NULL,
+    posted_by VARCHAR(255),
+    posted_at DATETIME,
+    CONSTRAINT fk_news_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
+);
