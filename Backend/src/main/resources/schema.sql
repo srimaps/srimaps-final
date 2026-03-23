@@ -63,3 +63,15 @@ CREATE TABLE IF NOT EXISTS alerts (
     expires_at DATETIME,
     CONSTRAINT fk_alerts_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
 );
+
+CREATE TABLE IF NOT EXISTS lost_found_items (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_type VARCHAR(50) NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    contact_info VARCHAR(255) NOT NULL,
+    route_id INT NULL,
+    reported_at DATETIME,
+    status VARCHAR(50) DEFAULT 'OPEN',
+    CONSTRAINT fk_lostfound_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
+);
