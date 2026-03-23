@@ -9,3 +9,9 @@ INSERT INTO buses (bus_id, bus_number, plate_number, route_id, capacity, status,
 (2, '177', 'NB-1773', 2, 54, 'ACTIVE', TRUE),
 (3, '120', 'NB-1202', 3, 54, 'ACTIVE', FALSE)
 ON DUPLICATE KEY UPDATE bus_number=VALUES(bus_number);
+
+INSERT INTO drivers (driver_id, full_name, email, phone, license_number, username, password, bus_id, is_active) VALUES
+(1, 'Kamal Perera', 'kamal@example.com', '0771234567', 'LIC138', 'kamal', 'driver138', 1, TRUE),
+(2, 'Sunil Silva', 'sunil@example.com', '0779876543', 'LIC177', 'sunil', 'driver177', 2, TRUE),
+(3, 'Nimal Fernando', 'nimal@example.com', '0774567890', 'LIC120', 'nimal', 'driver120', 3, TRUE)
+ON DUPLICATE KEY UPDATE username=VALUES(username);
