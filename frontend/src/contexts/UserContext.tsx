@@ -1,65 +1,70 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, ReactNode } from 'react';
+import { API_BASE } from '../utils/api';
+
 type UserRole = 'passenger' | 'driver' | null;
+
 interface Driver {
+  driverId: number;
+  busId: number | null;
   busNumber: string;
   name: string;
+  username: string;
+  routeNumber: string | null;
 }
+
 interface UserContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
   driver: Driver | null;
-  loginDriver: (busNumber: string, password: string) => boolean;
+  loginDriver: (username: string, password: string) => Promise<boolean>;
   logoutDriver: () => void;
   isDriverSharingLocation: boolean;
   setIsDriverSharingLocation: (sharing: boolean) => void;
 }
+
 const UserContext = createContext<UserContextType | undefined>(undefined);
+
 interface UserProviderProps {
   children: ReactNode;
 }
-// Mock driver credentials
-const driverCredentials: Record<
-  string,
-  {
-    password: string;
-    name: string;
-  }> =
-{
-  '138': {
-    password: 'driver138',
-    name: 'Kamal Perera'
-  },
-  '177': {
-    password: 'driver177',
-    name: 'Sunil Silva'
-  },
-  '120': {
-    password: 'driver120',
-    name: 'Nimal Fernando'
-  }
-};
 
-export function UserProvider({ children }: UserProviderProps){
-    const [role, setRole] = useState<UserRole>(null);
-    const [driver, setDriver] = useState<Driver | null>(null);
-    const [isDriverSharingLocation, setIsDriverSharingLocation] = useState(false);
-    const loginDriver = (busNumber: string, password: string): boolean => {
-    const credentials = driverCredentials[busNumber];
-    if (credentials && credentials.password === password) {
+export function UserProvider({ children }: UserProviderProps) {
+  const [role, setRole] = useState<UserRole>(null);
+  const [driver, setDriver] = useState<Driver | null>(null);
+  const [isDriverSharingLocation, setIsDriverSharingLocation] = useState(false);
+
+  const loginDriver = async (username: string, password: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${API_BASE}/drivers/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      if (!response.ok) return false;
+
+      const data = await response.json();
       setDriver({
-        busNumber,
-        name: credentials.name
+        driverId: data.driverId,
+        busId: data.busId ?? null,
+        busNumber: data.busNumber ?? '',
+        name: data.fullName ?? '',
+        username: data.username ?? username,
+        routeNumber: data.routeNumber ?? null
       });
       setRole('driver');
       return true;
+    } catch {
+      return false;
     }
-    return false;
   };
+
   const logoutDriver = () => {
     setDriver(null);
     setRole(null);
     setIsDriverSharingLocation(false);
   };
+
   return (
     <UserContext.Provider
       value={{
@@ -70,12 +75,13 @@ export function UserProvider({ children }: UserProviderProps){
         logoutDriver,
         isDriverSharingLocation,
         setIsDriverSharingLocation
-      }}>
-
+      }}
+    >
       {children}
-    </UserContext.Provider>);
-
+    </UserContext.Provider>
+  );
 }
+
 export function useUser() {
   const context = useContext(UserContext);
   if (context === undefined) {
@@ -83,7 +89,6 @@ export function useUser() {
   }
   return context;
 }
-
 
 
 
