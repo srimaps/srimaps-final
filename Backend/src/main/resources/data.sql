@@ -22,3 +22,8 @@ INSERT INTO schedules (schedule_id, route_id, departure_time, arrival_time, star
 (3, 2, '06:30:00', '07:30:00', 'Colombo Fort', 'Kaduwela', 'Fort', 'WEEKDAY'),
 (4, 3, '07:00:00', '08:00:00', 'Colombo Fort', 'Piliyandala', 'Fort', 'WEEKDAY')
 ON DUPLICATE KEY UPDATE route_id=VALUES(route_id);
+
+INSERT INTO news (news_id, title, description, route_id, posted_by, posted_at) VALUES
+(1, 'New Express Service on Route 138', 'Starting Monday, Route 138 will have express services during peak hours.', 1, 'Admin', NOW()),
+(2, 'Route 177 Schedule Update', 'Due to road construction, Route 177 may have slight delays.', 2, 'Admin', NOW())
+ON DUPLICATE KEY UPDATE title=VALUES(title);
