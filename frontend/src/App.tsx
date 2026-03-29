@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LanguageProvider } from './contexts/LanguageContext';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { UserProvider, useUser } from './contexts/UserContext';
+import { LanguageProvider } from './context/LanguageContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { UserProvider, useUser } from './context/UserContext';
 import { Header } from './components/Header';
 import CustomCursor from './components/CustomCursor';
 import { RoleSelection } from './pages/RoleSelection';
@@ -13,10 +13,13 @@ import { BusNews } from './pages/BusNews';
 import { Alerts } from './pages/Alerts';
 import { Schedule } from './pages/Schedule';
 import { LostAndFound } from './pages/LostAndFound';
+
 type Page = 'tracking' | 'news' | 'alerts' | 'schedule' | 'lostfound';
+
 function AppContent() {
   const { role, setRole, driver } = useUser();
   const [currentPage, setCurrentPage] = useState<Page>('tracking');
+
   const renderPage = () => {
     switch (currentPage) {
       case 'tracking':
@@ -33,14 +36,15 @@ function AppContent() {
         return <LiveTracking />;
     }
   };
-  // Role Selection Screen
+
   if (role === null) {
     return (
       <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors">
         <RoleSelection onSelectRole={setRole} />
-      </div>);
-
+      </div>
+    );
   }
+
   if (role === 'driver' && !driver) {
     return (
       <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors">
@@ -59,42 +63,28 @@ function AppContent() {
       </div>
     );
   }
-  // Passenger View (Full Website)
+
   return (
     <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900 transition-colors">
-      <Header
-        currentPage={currentPage}
-        onNavigate={(page) => setCurrentPage(page as Page)} />
-
-
+      <Header currentPage={currentPage} onNavigate={(page) => setCurrentPage(page as Page)} />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPage}
-            initial={{
-              opacity: 0,
-              y: 20
-            }}
-            animate={{
-              opacity: 1,
-              y: 0
-            }}
-            exit={{
-              opacity: 0,
-              y: -20
-            }}
-            transition={{
-              duration: 0.3
-            }}
-            className="h-full">
-
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="h-full"
+          >
             {renderPage()}
           </motion.div>
         </AnimatePresence>
       </main>
-    </div>);
-
+    </div>
+  );
 }
+
 export function App() {
   return (
     <ThemeProvider>
@@ -104,6 +94,6 @@ export function App() {
           <CustomCursor />
         </UserProvider>
       </LanguageProvider>
-    </ThemeProvider>);
-
+    </ThemeProvider>
+  );
 }
