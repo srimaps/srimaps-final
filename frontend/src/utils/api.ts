@@ -183,3 +183,30 @@ export async function createLostFound(payload: {
   });
   return handleResponse(response);
 }
+
+export async function getAlerts(routeNumber?: string): Promise<AlertApiItem[]> {
+  const url = routeNumber?.trim()
+    ? ${API_BASE}/alerts?routeNumber=${encodeURIComponent(routeNumber)}
+    : ${API_BASE}/alerts;
+  return handleResponse<AlertApiItem[]>(await fetch(url));
+}
+
+export async function getSchedules(params?: {
+  routeNumber?: string;
+  start?: string;
+  end?: string;
+}): Promise<ScheduleApiItem[]> {
+  const search = new URLSearchParams();
+  if (params?.routeNumber) search.set('routeNumber', params.routeNumber);
+  if (params?.start) search.set('start', params.start);
+  if (params?.end) search.set('end', params.end);
+
+  const qs = search.toString();
+  const url = qs ? ${API_BASE}/schedules?${qs} : ${API_BASE}/schedules;
+
+  return handleResponse<ScheduleApiItem[]>(await fetch(url));
+}
+
+export async function getRoutes() {
+  return handleResponse<any[]>(await fetch(${API_BASE}/routes));
+}
