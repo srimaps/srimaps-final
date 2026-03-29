@@ -100,3 +100,27 @@ export async function loginDriver(payload: {
   });
   return handleResponse<DriverAuthResponse>(response);
 }
+
+export async function updateDriverRoute(
+  driverId: number,
+  routeNumber: string
+): Promise<DriverAuthResponse> {
+  const response = await fetch(${API_BASE}/drivers/${driverId}/route, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ routeNumber }),
+  });
+  return handleResponse<DriverAuthResponse>(response);
+}
+
+export async function sendDriverLocation(
+  driverId: number,
+  payload: { latitude: number; longitude: number; speed?: number }
+) {
+  const response = await fetch(${API_BASE}/locations/driver/${driverId}, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(response);
+}
