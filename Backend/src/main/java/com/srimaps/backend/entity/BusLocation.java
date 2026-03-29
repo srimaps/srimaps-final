@@ -13,14 +13,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BusLocation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "location_id")
     private Integer locationId;
 
     @ManyToOne
-    @JoinColumn(name = "bus_id", nullable = false)
-    private Bus bus;
+    @JoinColumn(name = "driver_id", nullable = false)
+    private Driver driver;
 
     @Column(name = "latitude", nullable = false)
     private Double latitude;
@@ -33,8 +34,4 @@ public class BusLocation {
 
     @Column(name = "recorded_at")
     private LocalDateTime recordedAt = LocalDateTime.now();
-
-
 }
-
-  
