@@ -1,101 +1,123 @@
-import React, { useState, createContext, useContext, ReactNode } from 'react';
-import { API_BASE } from '../utils/api';
+import React, { createContext, useContext, useMemo, useState } from 'react';
+import {
+  loginDriver as loginDriverApi,
+  signupDriver as signupDriverApi,
+  updateDriverRoute as updateDriverRouteApi,
+  type DriverAuthResponse,
+} from '../utils/api';
 
-type UserRole = 'passenger' | 'driver' | null;
+type Role = 'passenger' | 'driver' | null;
 
-interface Driver {
+type DriverUser = {
   driverId: number;
-  busId: number | null;
-  busNumber: string;
-  name: string;
+  fullName: string;
   username: string;
+  phoneNumber: string;
   routeNumber: string | null;
-}
+};
 
-interface UserContextType {
-  role: UserRole;
-  setRole: (role: UserRole) => void;
-  driver: Driver | null;
+type UserContextType = {
+  role: Role;
+  setRole: (role: Role) => void;
+  driver: DriverUser | null;
   loginDriver: (username: string, password: string) => Promise<boolean>;
+  signupDriver: (
+    fullName: string,
+    username: string,
+    phoneNumber: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
+  updateDriverRoute: (
+    routeNumber: string
+  ) => Promise<{ success: boolean; error?: string }>;
   logoutDriver: () => void;
-  isDriverSharingLocation: boolean;
-  setIsDriverSharingLocation: (sharing: boolean) => void;
-}
+};
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-interface UserProviderProps {
-  children: ReactNode;
+function toDriverUser(data: DriverAuthResponse): DriverUser {
+  return {
+    driverId: data.driverId,
+    fullName: data.fullName,
+    username: data.username,
+    phoneNumber: data.phoneNumber,
+    routeNumber: data.routeNumber,
+  };
 }
 
-export function UserProvider({ children }: UserProviderProps) {
-  const [role, setRole] = useState<UserRole>(null);
-  const [driver, setDriver] = useState<Driver | null>(null);
-  const [isDriverSharingLocation, setIsDriverSharingLocation] = useState(false);
+export function UserProvider({ children }: { children: React.ReactNode }) {
+  const [role, setRole] = useState<Role>(null);
+  const [driver, setDriver] = useState<DriverUser | null>(null);
 
-  const loginDriver = async (username: string, password: string): Promise<boolean> => {
+  const loginDriver = async (username: string, password: string) => {
     try {
-      const response = await fetch(`${API_BASE}/drivers/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      if (!response.ok) return false;
-
-      const data = await response.json();
-      setDriver({
-        driverId: data.driverId,
-        busId: data.busId ?? null,
-        busNumber: data.busNumber ?? '',
-        name: data.fullName ?? '',
-        username: data.username ?? username,
-        routeNumber: data.routeNumber ?? null
-      });
-      setRole('driver');
+      const data = await loginDriverApi({ username, password });
+      setDriver(toDriverUser(data));
       return true;
     } catch {
       return false;
     }
   };
 
+  const signupDriver = async (
+    fullName: string,
+    username: string,
+    phoneNumber: string,
+    password: string
+  ) => {
+    try {
+      await signupDriverApi({ fullName, username, phoneNumber, password });
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Signup failed',
+      };
+    }
+  };
+
+  const updateDriverRoute = async (routeNumber: string) => {
+    if (!driver) {
+      return { success: false, error: 'Driver not logged in' };
+    }
+
+    try {
+      const data = await updateDriverRouteApi(driver.driverId, routeNumber);
+      setDriver(toDriverUser(data));
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Route update failed',
+      };
+    }
+  };
+
   const logoutDriver = () => {
     setDriver(null);
     setRole(null);
-    setIsDriverSharingLocation(false);
   };
 
-  return (
-    <UserContext.Provider
-      value={{
-        role,
-        setRole,
-        driver,
-        loginDriver,
-        logoutDriver,
-        isDriverSharingLocation,
-        setIsDriverSharingLocation
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      role,
+      setRole,
+      driver,
+      loginDriver,
+      signupDriver,
+      updateDriverRoute,
+      logoutDriver,
+    }),
+    [role, driver]
   );
+
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export function useUser() {
   const context = useContext(UserContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;
 }
-
-
-
-
-
-
-
-
-
-
