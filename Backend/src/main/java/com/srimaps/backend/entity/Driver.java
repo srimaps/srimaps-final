@@ -20,24 +20,18 @@ public class Driver {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @Column(name = "license_number", nullable = false, unique = true)
-    private String licenseNumber;
-
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "bus_id", unique = true)
-    private Bus bus;
+    @Column(name = "mobile_number", nullable = false)
+    private String mobileNumber;
+
+    @ManyToOne
+    @JoinColumn(name = "route_id")
+    private Route route;
 
     @Column(name = "is_active")
     private Boolean isActive = true;
