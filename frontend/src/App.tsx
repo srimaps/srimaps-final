@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LanguageProvider } from './context/LanguageContext';
-import { ThemeProvider } from './context/ThemeContext';
-import { UserProvider, useUser } from './context/UserContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { UserProvider, useUser } from './contexts/UserContext';
 import { Header } from './components/Header';
 import CustomCursor from './components/CustomCursor';
 import { RoleSelection } from './pages/RoleSelection';
