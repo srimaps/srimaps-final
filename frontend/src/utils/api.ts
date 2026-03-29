@@ -74,3 +74,29 @@ async function handleResponse<T>(response: Response): Promise<T> {
   }
   return response.json();
 }
+
+export async function signupDriver(payload: {
+  fullName: string;
+  username: string;
+  phoneNumber: string;
+  password: string;
+}): Promise<DriverAuthResponse> {
+  const response = await fetch(${API_BASE}/drivers/signup, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse<DriverAuthResponse>(response);
+}
+
+export async function loginDriver(payload: {
+  username: string;
+  password: string;
+}): Promise<DriverAuthResponse> {
+  const response = await fetch(${API_BASE}/drivers/login, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse<DriverAuthResponse>(response);
+}
