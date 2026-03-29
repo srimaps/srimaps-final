@@ -1,5 +1,6 @@
 package com.srimaps.backend.controller;
 
+import com.srimaps.backend.dto.LiveDriverLocationResponse;
 import com.srimaps.backend.dto.LocationRequest;
 import com.srimaps.backend.entity.BusLocation;
 import com.srimaps.backend.service.LocationService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/locations")
+@CrossOrigin(origins = "*")
 public class LocationController {
 
     private final LocationService locationService;
@@ -18,26 +20,25 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @PostMapping("/bus/{busId}")
-    public BusLocation addLocation(
-            @PathVariable Integer busId,
-            @Valid @RequestBody LocationRequest request
-    ) {
-        return locationService.addLocation(busId, request);
+    @PostMapping("/driver/{driverId}")
+    public BusLocation addLocation(@PathVariable Integer driverId,
+                                   @Valid @RequestBody LocationRequest request) {
+        return locationService.addLocation(driverId, request);
     }
 
-    @GetMapping("/bus/{busId}/latest")
-    public BusLocation getLatestLocation(@PathVariable Integer busId) {
-        return locationService.getLatestLocation(busId);
+    @GetMapping("/driver/{driverId}/latest")
+    public BusLocation getLatestLocation(@PathVariable Integer driverId) {
+        return locationService.getLatestLocation(driverId);
     }
 
-    @GetMapping("/bus/{busId}/history")
-    public List<BusLocation> getLocationHistory(@PathVariable Integer busId) {
-        return locationService.getLocationHistory(busId);
+    @GetMapping("/driver/{driverId}/history")
+    public List<BusLocation> getLocationHistory(@PathVariable Integer driverId) {
+        return locationService.getLocationHistory(driverId);
     }
 
     @GetMapping("/live")
-    public List<BusLocation> getLiveLocations() {
-        return locationService.getLatestLocationsForSharingBuses();
+    public List<LiveDriverLocationResponse> getLiveLocations(
+            @RequestParam(required = false) String routeNumber) {
+        return locationService.getLiveLocations(routeNumber);
     }
 }
