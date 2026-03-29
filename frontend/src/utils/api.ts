@@ -138,3 +138,17 @@ export async function getNews(routeNumber?: string): Promise<NewsApiItem[]> {
     : ${API_BASE}/news;
   return handleResponse<NewsApiItem[]>(await fetch(url));
 }
+
+export async function createNews(payload: {
+  title: string;
+  description: string;
+  postedBy?: string;
+  routeId?: number | null;
+}) {
+  const response = await fetch(${API_BASE}/news, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(response);
+}
