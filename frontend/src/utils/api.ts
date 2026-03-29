@@ -124,3 +124,17 @@ export async function sendDriverLocation(
   });
   return handleResponse(response);
 }
+
+export async function getLiveLocationsByRoute(routeNumber: string): Promise<LiveBus[]> {
+  const response = await fetch(
+    ${API_BASE}/locations/live?routeNumber=${encodeURIComponent(routeNumber)}
+  );
+  return handleResponse<LiveBus[]>(response);
+}
+
+export async function getNews(routeNumber?: string): Promise<NewsApiItem[]> {
+  const url = routeNumber?.trim()
+    ? ${API_BASE}/news?routeNumber=${encodeURIComponent(routeNumber)}
+    : ${API_BASE}/news;
+  return handleResponse<NewsApiItem[]>(await fetch(url));
+}
