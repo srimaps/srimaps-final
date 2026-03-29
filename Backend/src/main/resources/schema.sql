@@ -4,7 +4,6 @@ DROP TABLE IF EXISTS alerts;
 DROP TABLE IF EXISTS news;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS drivers;
-DROP TABLE IF EXISTS buses;
 DROP TABLE IF EXISTS routes;
 
 CREATE TABLE routes (
@@ -16,17 +15,6 @@ CREATE TABLE routes (
     is_active BOOLEAN DEFAULT TRUE
 );
 
-CREATE TABLE buses (
-    bus_id INT AUTO_INCREMENT PRIMARY KEY,
-    bus_number VARCHAR(50) NOT NULL UNIQUE,
-    plate_number VARCHAR(50) NOT NULL UNIQUE,
-    route_id INT NOT NULL,
-    capacity INT,
-    status VARCHAR(50),
-    is_sharing_location BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_buses_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
-);
-
 CREATE TABLE drivers (
     driver_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(255) NOT NULL,
@@ -34,10 +22,8 @@ CREATE TABLE drivers (
     password VARCHAR(255) NOT NULL,
     mobile_number VARCHAR(50) NOT NULL,
     route_id INT NULL,
-    bus_id INT UNIQUE,
     is_active BOOLEAN DEFAULT TRUE,
-    CONSTRAINT fk_drivers_route FOREIGN KEY (route_id) REFERENCES routes(route_id),
-    CONSTRAINT fk_drivers_bus FOREIGN KEY (bus_id) REFERENCES buses(bus_id)
+    CONSTRAINT fk_drivers_route FOREIGN KEY (route_id) REFERENCES routes(route_id)
 );
 
 CREATE TABLE schedules (
@@ -87,10 +73,10 @@ CREATE TABLE lost_found_items (
 
 CREATE TABLE bus_locations (
     location_id INT AUTO_INCREMENT PRIMARY KEY,
-    bus_id INT NOT NULL,
+    driver_id INT NOT NULL,
     latitude DOUBLE NOT NULL,
     longitude DOUBLE NOT NULL,
     speed DOUBLE DEFAULT 0,
     recorded_at DATETIME,
-    CONSTRAINT fk_locations_bus FOREIGN KEY (bus_id) REFERENCES buses(bus_id)
+    CONSTRAINT fk_locations_driver FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
 );
