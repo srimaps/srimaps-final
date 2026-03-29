@@ -152,3 +152,19 @@ export async function createNews(payload: {
   });
   return handleResponse(response);
 }
+
+export async function getLostFound(params?: {
+  type?: string;
+  status?: string;
+  routeNumber?: string;
+}): Promise<LostFoundApiItem[]> {
+  const search = new URLSearchParams();
+  if (params?.type) search.set('type', params.type);
+  if (params?.status) search.set('status', params.status);
+  if (params?.routeNumber) search.set('routeNumber', params.routeNumber);
+
+  const qs = search.toString();
+  const url = qs ? ${API_BASE}/lost-found?${qs} : ${API_BASE}/lost-found;
+
+  return handleResponse<LostFoundApiItem[]>(await fetch(url));
+}
