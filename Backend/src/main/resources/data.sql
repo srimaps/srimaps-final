@@ -4,16 +4,10 @@ INSERT INTO routes (route_id, route_number, start_destination, end_destination, 
 (3, '120', 'Colombo Fort', 'Piliyandala', 20.0, TRUE)
 ON DUPLICATE KEY UPDATE route_number = VALUES(route_number);
 
-INSERT INTO buses (bus_id, bus_number, plate_number, route_id, capacity, status, is_sharing_location) VALUES
-(1, '138', 'NB-1381', 1, 54, 'ACTIVE', TRUE),
-(2, '177', 'NB-1773', 2, 54, 'ACTIVE', TRUE),
-(3, '120', 'NB-1202', 3, 54, 'ACTIVE', FALSE)
-ON DUPLICATE KEY UPDATE bus_number = VALUES(bus_number);
-
-INSERT INTO drivers (driver_id, full_name, username, password, mobile_number, route_id, bus_id, is_active) VALUES
-(1, 'Kamal Perera', 'kamal', 'driver138', '0771234567', 1, 1, TRUE),
-(2, 'Sunil Silva', 'sunil', 'driver177', '0779876543', 2, 2, TRUE),
-(3, 'Nimal Fernando', 'nimal', 'driver120', '0774567890', 3, 3, TRUE)
+INSERT INTO drivers (driver_id, full_name, username, password, mobile_number, route_id, is_active) VALUES
+(1, 'Kamal Perera', 'kamal', 'driver138', '0771234567', 1, TRUE),
+(2, 'Sunil Silva', 'sunil', 'driver177', '0779876543', 2, TRUE),
+(3, 'Nimal Fernando', 'nimal', 'driver120', '0774567890', '3', TRUE)
 ON DUPLICATE KEY UPDATE username = VALUES(username);
 
 INSERT INTO schedules (schedule_id, route_id, departure_time, arrival_time, start_destination, end_destination, bus_stop, day_type) VALUES
@@ -38,8 +32,12 @@ INSERT INTO lost_found_items (item_id, item_type, item_name, description, contac
 (2, 'FOUND', 'Wallet', 'Brown leather wallet with ID cards inside', '0779876543', 3, NOW(), 'OPEN')
 ON DUPLICATE KEY UPDATE item_name = VALUES(item_name);
 
-INSERT INTO bus_locations (location_id, bus_id, latitude, longitude, speed, recorded_at) VALUES
+INSERT INTO bus_locations (location_id, driver_id, latitude, longitude, speed, recorded_at) VALUES
 (1, 1, 6.9271, 79.8612, 35.0, NOW()),
 (2, 2, 6.9344, 79.9850, 30.0, NOW()),
 (3, 3, 6.8013, 79.9220, 20.0, NOW())
-ON DUPLICATE KEY UPDATE latitude = VALUES(latitude), longitude = VALUES(longitude), speed = VALUES(speed), recorded_at = VALUES(recorded_at);
+ON DUPLICATE KEY UPDATE
+latitude = VALUES(latitude),
+longitude = VALUES(longitude),
+speed = VALUES(speed),
+recorded_at = VALUES(recorded_at);
