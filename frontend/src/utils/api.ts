@@ -39,3 +39,24 @@ export type LostFoundApiItem = {
   reportedAt: string;
   status: string;
 };
+
+export type AlertApiItem = {
+  alertId: number;
+  title: string;
+  message: string;
+  severity: string;
+  route: { routeId: number; routeNumber: string } | null;
+  createdAt: string;
+  expiresAt: string | null;
+};
+
+export type ScheduleApiItem = {
+  scheduleId: number;
+  route: { routeId: number; routeNumber: string };
+  departureTime: string;
+  arrivalTime: string;
+  startDestination: string;
+  endDestination: string;
+  busStop: string | null;
+  dayType: string;
+};
