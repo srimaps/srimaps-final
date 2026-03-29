@@ -11,8 +11,7 @@ public class LoginResponse {
     private Integer driverId;
     private String fullName;
     private String username;
-    private Integer busId;
-    private String busNumber;
+    private String phoneNumber;
     private String routeNumber;
     private String message;
 }
