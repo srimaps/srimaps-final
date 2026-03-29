@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface BusLocationRepository extends JpaRepository<BusLocation, Integer> {
 
-    Optional<BusLocation> findTopByBus_BusIdOrderByRecordedAtDesc(Integer busId);
+    Optional<BusLocation> findTopByDriver_DriverIdOrderByRecordedAtDesc(Integer driverId);
 
-    List<BusLocation> findByBus_BusIdOrderByRecordedAtDesc(Integer busId);
+    List<BusLocation> findByDriver_DriverIdOrderByRecordedAtDesc(Integer driverId);
 
     List<BusLocation> findAllByOrderByRecordedAtDesc();
 }
