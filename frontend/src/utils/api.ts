@@ -60,3 +60,17 @@ export type ScheduleApiItem = {
   busStop: string | null;
   dayType: string;
 };
+
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    let message = 'Request failed';
+    try {
+      const data = await response.json();
+      message = data.message || data.error || message;
+    } catch {
+      //
+    }
+    throw new Error(message);
+  }
+  return response.json();
+}
