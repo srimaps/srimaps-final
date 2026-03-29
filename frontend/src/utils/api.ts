@@ -168,3 +168,18 @@ export async function getLostFound(params?: {
 
   return handleResponse<LostFoundApiItem[]>(await fetch(url));
 }
+
+export async function createLostFound(payload: {
+  itemType: string;
+  itemName: string;
+  description: string;
+  contactInfo: string;
+  routeId?: number | null;
+}) {
+  const response = await fetch(${API_BASE}/lost-found, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(response);
+}
