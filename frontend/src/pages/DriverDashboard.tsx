@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { LogOutIcon, MapPinIcon, RadioIcon, SaveIcon, TruckIcon } from 'lucide-react';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../contexts/UserContext';
 import { sendDriverLocation } from '../utils/api';
 
 export function DriverDashboard() {
