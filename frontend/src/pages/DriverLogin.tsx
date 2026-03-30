@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeftIcon, TruckIcon, AlertCircleIcon } from 'lucide-react';
+import { ArrowLeftIcon, TruckIcon, AlertCircleIcon, EyeIcon, EyeOffIcon } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 
 interface DriverLoginProps {
@@ -16,6 +16,9 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -78,11 +81,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
 
         <div className="flex gap-2 mb-6">
           <button
-            onClick={() => {
-              setMode('login');
-              setError('');
-              setSuccess('');
-            }}
+            onClick={() => { setMode('login'); setError(''); setSuccess(''); }}
             className={`flex-1 py-2 rounded-lg font-medium ${
               mode === 'login'
                 ? 'bg-teal-600 text-white'
@@ -92,11 +91,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
             Login
           </button>
           <button
-            onClick={() => {
-              setMode('signup');
-              setError('');
-              setSuccess('');
-            }}
+            onClick={() => { setMode('signup'); setError(''); setSuccess(''); }}
             className={`flex-1 py-2 rounded-lg font-medium ${
               mode === 'signup'
                 ? 'bg-teal-600 text-white'
@@ -122,14 +117,25 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
 
             <div>
               <label className="block mb-2 text-sm font-medium dark:text-white">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"
-                placeholder="Enter password"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showLoginPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 pr-12 border rounded-lg dark:bg-gray-700 dark:text-white"
+                  placeholder="Enter password"
+                  required
+                />
+                {password && (
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginPassword(!showLoginPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  >
+                    {showLoginPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                  </button>
+                )}
+              </div>
             </div>
 
             <button
@@ -176,14 +182,25 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
 
             <div>
               <label className="block mb-2 text-sm font-medium dark:text-white">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"
-                placeholder="Choose password"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showSignupPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 pr-12 border rounded-lg dark:bg-gray-700 dark:text-white"
+                  placeholder="Choose password"
+                  required
+                />
+                {password && (
+                  <button
+                    type="button"
+                    onClick={() => setShowSignupPassword(!showSignupPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                  >
+                    {showSignupPassword ? <EyeOffIcon size={18} /> : <EyeIcon size={18} />}
+                  </button>
+                )}
+              </div>
             </div>
 
             <button
