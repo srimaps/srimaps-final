@@ -50,7 +50,7 @@ export function DriverLogin({ onBack }: DriverLoginProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto">
+    <div className="max-w-md mx-auto mt-12">
       <button
         onClick={onBack}
         className="mb-6 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
