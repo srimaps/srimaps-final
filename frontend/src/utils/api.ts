@@ -93,7 +93,7 @@ export async function loginDriver(payload: {
   username: string;
   password: string;
 }): Promise<DriverAuthResponse> {
-  const response = await fetch(${API_BASE}/drivers/login, {
+  const response = await fetch(`${API_BASE}/drivers/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -105,7 +105,7 @@ export async function updateDriverRoute(
   driverId: number,
   routeNumber: string
 ): Promise<DriverAuthResponse> {
-  const response = await fetch(${API_BASE}/drivers/${driverId}/route, {
+  const response = await fetch(`${API_BASE}/drivers/${driverId}/route`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ routeNumber }),
@@ -117,7 +117,7 @@ export async function sendDriverLocation(
   driverId: number,
   payload: { latitude: number; longitude: number; speed?: number }
 ) {
-  const response = await fetch(${API_BASE}/locations/driver/${driverId}, {
+  const response = await fetch(`${API_BASE}/locations/driver/${driverId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -127,15 +127,15 @@ export async function sendDriverLocation(
 
 export async function getLiveLocationsByRoute(routeNumber: string): Promise<LiveBus[]> {
   const response = await fetch(
-    ${API_BASE}/locations/live?routeNumber=${encodeURIComponent(routeNumber)}
+    `${API_BASE}/locations/live?routeNumber=${encodeURIComponent(routeNumber)}`
   );
   return handleResponse<LiveBus[]>(response);
 }
 
 export async function getNews(routeNumber?: string): Promise<NewsApiItem[]> {
   const url = routeNumber?.trim()
-    ? ${API_BASE}/news?routeNumber=${encodeURIComponent(routeNumber)}
-    : ${API_BASE}/news;
+    ? `${API_BASE}/news?routeNumber=${encodeURIComponent(routeNumber)}`
+    : `${API_BASE}/news`;
   return handleResponse<NewsApiItem[]>(await fetch(url));
 }
 
@@ -145,7 +145,7 @@ export async function createNews(payload: {
   postedBy?: string;
   routeId?: number | null;
 }) {
-  const response = await fetch(${API_BASE}/news, {
+  const response = await fetch(`${API_BASE}/news`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -164,7 +164,7 @@ export async function getLostFound(params?: {
   if (params?.routeNumber) search.set('routeNumber', params.routeNumber);
 
   const qs = search.toString();
-  const url = qs ? ${API_BASE}/lost-found?${qs} : ${API_BASE}/lost-found;
+  const url = qs ? `${API_BASE}/lost-found?${qs}` : `${API_BASE}/lost-found`;
 
   return handleResponse<LostFoundApiItem[]>(await fetch(url));
 }
@@ -176,7 +176,7 @@ export async function createLostFound(payload: {
   contactInfo: string;
   routeId?: number | null;
 }) {
-  const response = await fetch(${API_BASE}/lost-found, {
+  const response = await fetch(`${API_BASE}/lost-found`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -186,8 +186,8 @@ export async function createLostFound(payload: {
 
 export async function getAlerts(routeNumber?: string): Promise<AlertApiItem[]> {
   const url = routeNumber?.trim()
-    ? ${API_BASE}/alerts?routeNumber=${encodeURIComponent(routeNumber)}
-    : ${API_BASE}/alerts;
+    ? `${API_BASE}/alerts?routeNumber=${encodeURIComponent(routeNumber)}`
+    : `${API_BASE}/alerts`;
   return handleResponse<AlertApiItem[]>(await fetch(url));
 }
 
@@ -202,11 +202,11 @@ export async function getSchedules(params?: {
   if (params?.end) search.set('end', params.end);
 
   const qs = search.toString();
-  const url = qs ? ${API_BASE}/schedules?${qs} : ${API_BASE}/schedules;
+  const url = qs ? `${API_BASE}/schedules?${qs}` : `${API_BASE}/schedules`;
 
   return handleResponse<ScheduleApiItem[]>(await fetch(url));
 }
 
 export async function getRoutes() {
-  return handleResponse<any[]>(await fetch(${API_BASE}/routes));
+  return handleResponse<any[]>(await fetch(`${API_BASE}/routes`));
 }
