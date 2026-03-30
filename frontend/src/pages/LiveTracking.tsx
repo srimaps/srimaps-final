@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SearchIcon } from 'lucide-react';
 import { getLiveLocationsByRoute, type LiveBus } from '../utils/api';
-import { BusMap } from '../components/BusMap';
 
 export function LiveTracking() {
   const [routeNumber, setRouteNumber] = useState('');
@@ -34,22 +33,8 @@ export function LiveTracking() {
     }
   };
 
-  // Convert LiveBus (from API) to Bus shape expected by BusMap
-  const mappedBuses = buses.map((bus) => ({
-    id: String(bus.driverId),
-    number: bus.routeNumber,
-    status: 'on-time' as const,
-    startDestination: '',
-    endDestination: '',
-    currentLocation: {
-      lat: bus.latitude,
-      lng: bus.longitude,
-    },
-  }));
-
   return (
     <div className="space-y-6">
-      {/* Search card */}
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
@@ -64,7 +49,6 @@ export function LiveTracking() {
           <input
             value={routeNumber}
             onChange={(e) => setRouteNumber(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             placeholder="Enter route number (e.g. 138)"
             className="flex-1 min-w-[220px] px-4 py-3 border rounded-lg dark:bg-gray-700 dark:text-white"
           />
@@ -79,44 +63,28 @@ export function LiveTracking() {
         </div>
       </motion.div>
 
-      {/* Error */}
       {error && (
         <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-xl p-4">
           {error}
         </div>
       )}
 
-      {/* Map — shown once we have results */}
-      {buses.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
-          style={{ height: '480px' }}
-        >
-          <BusMap buses={mappedBuses} />
-        </motion.div>
-      )}
-
-      {/* Bus cards */}
       <div className="grid gap-4">
         {buses.map((bus) => (
-          <motion.div
+          <div
             key={bus.driverId}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5"
           >
             <h3 className="text-lg font-semibold dark:text-white">{bus.driverName}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">@{bus.username}</p>
             <div className="mt-3 space-y-1 text-sm dark:text-gray-200">
-              <p>Route: <span className="font-medium">{bus.routeNumber}</span></p>
+              <p>Route: {bus.routeNumber}</p>
               <p>Latitude: {bus.latitude}</p>
               <p>Longitude: {bus.longitude}</p>
-              <p>Speed: {bus.speed ?? 0} km/h</p>
+              <p>Speed: {bus.speed ?? 0}</p>
               <p>Updated: {new Date(bus.recordedAt).toLocaleString()}</p>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
