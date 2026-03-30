@@ -81,7 +81,7 @@ export async function signupDriver(payload: {
   phoneNumber: string;
   password: string;
 }): Promise<DriverAuthResponse> {
-  const response = await fetch(${API_BASE}/drivers/signup, {
+  const response = await fetch(`${API_BASE}/drivers/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
